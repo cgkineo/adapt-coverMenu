@@ -1,0 +1,22 @@
+{
+  "name": "adapt-cover",
+  "version": "0.0.0",
+  "homepage": "https://github.com/cgkineo/adapt-cover-menu",
+  "authors": [
+    "Salamat Ali"
+  ],
+  "description": "",
+  "main": "js/adapt-cover.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-menu"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,33 @@
+<div class="menu-container" role="region">
+	<div class="menu-intro-screen">
+		<div class="menu-intro-screen-inner">
+			{{#if title}}
+			<div class="menu-title">
+				<h1 class="menu-title-inner">
+					{{{title}}}
+				</h1>
+			</div>
+			{{/if}}
+			{{#if body}}
+			<div class="menu-body">
+				<div class="menu-body-inner">
+					{{{body}}}
+				</div>
+			</div>
+			{{/if}}
+			<a href="#" class="menu-reveal-items button" role="button" aria-label="{{_accessibility._ariaRegions.coverFlowMenuStart}}">Start</a>
+		</div>
+	</div>
+	<div class="menu-item-container" role="menu">
+		<div class="menu-item-container-inner clearfix">
+		{{!-- Items rendered here --}}
+		</div>
+		<div class="menu-item-indicator-container">		
+			<div class="menu-item-indicator-container-inner clearfix">
+				{{!-- Indicators rendered here --}}
+			</div>
+		</div>
+		<a href="#" class="menu-item-control menu-item-control-left icon-controls-left icon" role="button" aria-label="{{_accessibility._ariaLabels.previous}}"></a>
+		<a href="#" class="menu-item-control menu-item-control-right icon-controls-right icon" role="button" aria-label="{{_accessibility._ariaLabels.next}}"></a>
+	</div>
+</div>

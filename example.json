@@ -1,0 +1,13 @@
+"_coverMenu":{
+    "_backgroundGraphic": {
+        "alt": "This is a picture of Adapt's origami birds.",
+        "src": "course/en/images/menu-item-one.jpg"
+    },
+    "_indicatorGraphic": {
+        "_isComplete": "course/en/images/origami-menu-three.jpg",
+        "_isVisited": "course/en/images/origami-menu-two.jpg",
+        "_isLocked":"course/en/images/origami-menu-one.jpg",
+        "_default":"course/en/images/origami-menu-one.jpg",
+        "_accessibilityEnabled": "course/en/images/origami-menu-one.jpg"
+    }
+}
