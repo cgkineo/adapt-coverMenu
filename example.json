@@ -1,3 +1,4 @@
+// in contentObjects.json, on each object to appear on the menu. This replaces the "_graphic" data object
 "_coverMenu":{
     "_backgroundGraphic": {
         "alt": "This is a picture of Adapt's origami birds.",

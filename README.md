@@ -7,7 +7,8 @@ Since the cover menu requires graphical assets to be present to function correct
 
 ###Example JSON
 
-Configuration options are explained below.
+Configuration options are explained below. The "_coverMenu" object replaces the "_graphic" object for each object in contentObjects.json that
+appears on the menu.
 
 ```
 "_coverMenu":{
