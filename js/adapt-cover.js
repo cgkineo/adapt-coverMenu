@@ -25,9 +25,16 @@ define(function(require) {
             var nthChild = 0;
             this.model.getChildren().each(function(item) {
                 if(item.get('_isAvailable')) {
-                    var assessment = _.find(item.getChildren().toJSON(), function(it) { return typeof it._assessment !== "undefined"; } );
-                    if (assessment != undefined && typeof assessment.assessmentModel != "undefined") {
-                        var scoreAsPercentage = (Adapt.course.get('_isAssessmentAttemptComplete')) ? assessment.assessmentModel.getLastAttemptScoreAsPercent(): null;
+                    
+                    var assessment = _.find(item.getChildren().toJSON(), function(it) { 
+                        return typeof it._assessment !== "undefined"; 
+                    });
+
+                    var isAssessment = (assessment != undefined && typeof assessment.assessmentModel != "undefined");
+                    if (isAssessment) {
+                        var scoreAsPercentage = (Adapt.course.get('_isAssessmentAttemptComplete')) 
+                            ? assessment.assessmentModel.getLastAttemptScoreAsPercent()
+                            : null;
                         var hasScore = (scoreAsPercentage != null && !isNaN(scoreAsPercentage));
                         item.set("_assessment", { 
                             isComplete : (typeof Adapt.course.get('_isAssessmentAttemptComplete') !== "undefined")
@@ -35,20 +42,28 @@ define(function(require) {
                                 : false,
                             hasScore: hasScore,
                             scoreAsPercentage : scoreAsPercentage,
-                            isPassed : (typeof Adapt.course.get('_isAssessmentPassed') !== "undefined") ? Adapt.course.get('_isAssessmentPassed') : false
+                            isPassed : (typeof Adapt.course.get('_isAssessmentPassed') !== "undefined") 
+                                ? Adapt.course.get('_isAssessmentPassed') 
+                                : false
                         });
                     }
+
                     item.set("_isLocked", false);
                     if (item.get("_lock")) {
                         var contentObjects = item.get("_lock");
                         var completeCount = 0;
-                        for( var i = 0; i < contentObjects.length; i++) if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) completeCount++;
+                        for( var i = 0; i < contentObjects.length; i++) {
+                            if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) {
+                                completeCount++;
+                            }
+                        }
                         if (completeCount < contentObjects.length) {
                             item.set("_isLocked", true);
                         }
                     }
                 }
             });
+
             MenuView.prototype.preRender.call(this);
             this.listenTo(Adapt, "indicator:clicked", this.navigateToCurrentIndex);
             this.listenTo(Adapt, "menuView:ready", this.setupIndicatorLayout);
@@ -126,7 +141,6 @@ define(function(require) {
         },
 
         configureAccessibilityTabbing: function(index) {
-            console.log(index)
             if ($('html').hasClass('accessibility')) {
                 this.$(".menu-item-control").addClass("menu-item-control-hide").attr('tabindex', -1);
                 $('.menu-item-indicator').attr('tabindex', -1);
@@ -259,14 +273,19 @@ define(function(require) {
             if (!this.model.get('_isComplete') && !this.model.get('_isVisited')) {
                 this.setVisitedIfBlocksComplete();
             }
-            if (this.model.get('_assessment') && Adapt.course.get('_isAssessmentAttemptComplete') && !this.model.get('_isComplete')) {
+
+            var isCompletedAssessment = (this.model.get('_assessment') 
+                    && Adapt.course.get('_isAssessmentAttemptComplete') && !this.model.get('_isComplete'));
+            if (isCompletedAssessment) {
                 this.model.set('_isComplete', true);
             }
         },
 
         setVisitedIfBlocksComplete: function() {
             var completedBlock = this.model.findDescendants('blocks').findWhere({'_isComplete': true});
-            if (completedBlock != undefined)  this.model.set('_isVisited', true);
+            if (completedBlock != undefined) {
+                this.model.set('_isVisited', true);  
+            } 
         },
 
         postRender: function() {

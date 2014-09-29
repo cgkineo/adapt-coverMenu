@@ -21,7 +21,6 @@ define(function(require) {
 
     	/*handles navigation left/right event and navigate to current index*/
     	handleNavigation: function(index) {
-    		//console.log("CoverExtensionsView::handleNavigation");
     		this.currentItemInView(this.collection.models[index]);
     	},
 
