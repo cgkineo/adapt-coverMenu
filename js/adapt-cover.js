@@ -25,25 +25,24 @@ define(function(require) {
             var nthChild = 0;
             this.model.getChildren().each(function(item) {
                 if(item.get('_isAvailable')) {
-                    
-                    var assessment = _.find(item.getChildren().toJSON(), function(it) { 
-                        return typeof it._assessment !== "undefined"; 
+                    var assessmentArticle = item.getChildren().find(function(article) { 
+                        return article.has('_assessment');
                     });
 
-                    var isAssessment = (assessment != undefined && typeof assessment.assessmentModel != "undefined");
+                    var isAssessment = assessmentArticle != undefined;
                     if (isAssessment) {
-                        var scoreAsPercentage = (Adapt.course.get('_isAssessmentAttemptComplete')) 
-                            ? assessment.assessmentModel.getLastAttemptScoreAsPercent()
+                        var scoreAsPercentage = assessmentArticle.get('_isAssessmentComplete')
+                            ? assessmentArticle.get('_lastAttemptScoreAsPercent')
                             : null;
                         var hasScore = (scoreAsPercentage != null && !isNaN(scoreAsPercentage));
                         item.set("_assessment", { 
-                            isComplete : (typeof Adapt.course.get('_isAssessmentAttemptComplete') !== "undefined")
-                                ? Adapt.course.get('_isAssessmentAttemptComplete')
+                            isComplete : assessmentArticle.has('_isAssessmentComplete')
+                                ? assessmentArticle.get('_isAssessmentComplete')
                                 : false,
                             hasScore: hasScore,
                             scoreAsPercentage : scoreAsPercentage,
-                            isPassed : (typeof Adapt.course.get('_isAssessmentPassed') !== "undefined") 
-                                ? Adapt.course.get('_isAssessmentPassed') 
+                            isPassed : assessmentArticle.has('_isPass') 
+                                ? assessmentArticle.get('_isPass') 
                                 : false
                         });
                     }
@@ -83,16 +82,10 @@ define(function(require) {
         },
 
         renderMenuItems: function(item, nthChild) {
-            this.$('.menu-item-container-inner').append(new CoverItemView({
-                model:item, 
-                nthChild:nthChild
-            }).$el);
-            var siblingsLength = this.model.getChildren().models.length;
-            this.$('.menu-item-indicator-container-inner').append(new CoverItemIndicatorView({
-                model:item, 
-                nthChild:nthChild,
-                siblingsLength:siblingsLength
-            }).$el);
+            item.set({'_nthChild':nthChild, '_siblingsLength':this.model.getChildren().models.length});
+
+            this.$('.menu-item-container-inner').append(new CoverItemView({model:item}).$el);
+            this.$('.menu-item-indicator-container-inner').append(new CoverItemIndicatorView({model:item}).$el);
         },
 
         setupLayout: function() {
@@ -220,8 +213,8 @@ define(function(require) {
             return [
                 'menu-item',
                 'menu-item-' + this.model.get('_id') ,
-                'nth-child-' + this.options.nthChild,
-                this.options.nthChild % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
+                'nth-child-' + this.model.get('_nthChild'),
+                this.model.get('_nthChild') % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
             ].join(' ');
         },
 
@@ -259,8 +252,8 @@ define(function(require) {
             return [
                 'menu-item-indicator',
                 'menu-item-indicator-' + this.model.get('_id') ,
-                'nth-child-' + this.options.nthChild,
-                this.options.nthChild % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
+                'nth-child-' + this.model.get('_nthChild'),
+                this.model.get('_nthChild') % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
             ].join(' ');
         },
 
@@ -275,7 +268,7 @@ define(function(require) {
             }
 
             var isCompletedAssessment = (this.model.get('_assessment') 
-                    && Adapt.course.get('_isAssessmentAttemptComplete') && !this.model.get('_isComplete'));
+                    && this.model.get('_assessment')._isComplete && !this.model.get('_isComplete'));
             if (isCompletedAssessment) {
                 this.model.set('_isComplete', true);
             }
@@ -289,7 +282,7 @@ define(function(require) {
         },
 
         postRender: function() {
-            var numItems = this.options.siblingsLength
+            var numItems = this.model.get('_siblingsLength');
             var width = 100 / numItems;
             $(".menu-item-indicator").css({
                 width: width + "%"
