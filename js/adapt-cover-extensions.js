@@ -10,8 +10,15 @@ define(function(require) {
 
     	initialize: function() {
     		this.collection = this.model.getChildren();
+    		this.listenTo(Adapt, 'remove', this.remove);
     		this.listenTo(Adapt, "cover:revealed", this.itemsRevealed);
     		this.listenTo(Adapt, "cover:navigate", this.handleNavigation);
+    	},
+
+    	remove: function() {
+    	    this.$el.remove();
+    	    this.stopListening();
+    	    return this;
     	},
 
     	/*handles event when menu intro start button is clicked and the menu items are revealed*/
