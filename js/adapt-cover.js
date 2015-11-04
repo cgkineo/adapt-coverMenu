@@ -79,6 +79,7 @@ define(function(require) {
             }, this));
             this.setupLayout();
             this.listenTo(Adapt, 'pageView:ready menuView:ready', this.setupLegacyFocus);
+            this.$el.addClass('cover-menu');
         },
 
         renderMenuItems: function(item, nthChild) {
