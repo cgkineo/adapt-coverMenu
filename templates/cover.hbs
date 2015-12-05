@@ -1,17 +1,17 @@
-<div class="menu-container" role="region">
+<div class="menu-container" role="region" aria-label="{{_globals._menu._coverMenu.ariaRegion}}">
 	<div class="menu-intro-screen">
 		<div class="menu-intro-screen-inner">
-			{{#if title}}
-			<div class="menu-title" role="heading">
-				<h1 class="menu-title-inner">
-					{{{title}}}
-				</h1>
+            {{#if displayTitle}}
+            <div class="menu-title">
+                    <div class="menu-title-inner h1 accessible-text-block" role="heading" aria-level="1" tabindex="0">
+                        {{{displayTitle}}}
+                    </div>
 			</div>
 			{{/if}}
 			{{#if body}}
-			<div class="menu-body">
-				<div class="menu-body-inner">
-					{{{body}}}
+                <div class="menu-body">
+                    <div class="menu-body-inner accessible-text-block">
+                        {{{a11y_text body}}}
 				</div>
 			</div>
 			{{/if}}

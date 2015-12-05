@@ -1,15 +1,17 @@
-<div class="menu-item-inner" role="menuitem">
-	<div class="menu-item-title" role="heading">
-		<h2 class="menu-item-title-inner">{{{title}}}</h2>
+<div class="menu-item-inner" role="menuitem" aria-label="{{_globals._menu._coverMenu.menuItem}}" {{#if _globals._menu._coverMenu.menuItem}}tabindex="0"{{/if}}>
+    <div class="menu-item-title">
+        <div class="menu-item-title-inner h3 accessible-text-block" role="heading" aria-level="2" tabindex="0">{{{displayTitle}}}</div>
 	</div>
 	<div class="menu-item-body">
-		<div class="menu-item-body-inner">{{{body}}}</div>
+		<div class="menu-item-body-inner">{{{a11y_text body}}}</div>
 	</div>
+    {{#if duration}}
 	<div class="menu-item-duration">
-		<div class="menu-item-duration-inner">Duration: {{{duration}}}</div>
+		<div class="menu-item-duration-inner accessible-text-block" role="region" tabindex="0">{{#if _globals._menu._coverMenu.durationLabel}}{{{_globals._menu._coverMenu.durationLabel}}}{{/if}} {{{duration}}}</div>
 	</div>
+    {{/if}}
 	{{#unless _isLocked}}
-	<a class="menu-item-route button" href="#/id/{{_id}}" class="{{#if _isVisited}}visited{{/if}}" aria-label="{{_coverMenu_ariaLabels.menuViewButton}}">
+	<a class="menu-item-route button {{#if _isVisited}}visited{{/if}} accessible-text-block" href="#/id/{{_id}}" aria-label="{{_coverMenu_ariaLabels.menuViewButton}}">
 		{{{linkText}}}
 	</a>
 	{{/unless}}
