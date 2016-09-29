@@ -1,0 +1,128 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://jsonschema.net",
+  "$ref": "http://localhost/plugins/content/contentobject/model.schema",
+  "globals": {
+    "ariaRegion": {
+      "type": "string",
+      "required": true,
+      "default": "Menu",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    }
+  },
+  "properties": {
+    "pluginLocations": {
+      "type":"object",
+      "required":true,
+      "properties":{
+        "config": {
+          "type":"object"
+        },
+        "course": {
+          "type":"object"
+        },
+        "contentobject": {
+          "type":"object”,
+	  "properties":{
+	   	"_coverMenu": {
+                    "type": "object",
+                    "required": false,
+                    "legend": “Cover Menu image",
+                    "properties": {
+                        "_backgroundGraphic": {
+                            "type": "object",
+                            "required": false,
+                            "legend": “Cover Menu image",
+                            "properties": {
+                                "alt": {
+                                    "type": "string",
+                                    "required": false,
+				      "title": “Add your Image Alt Here ”,
+                                    "default": "",
+                                    "inputType": "Text",
+                                    "validators": [],
+                                    "help": “This Alt tag is for the accessible part of the course”
+                                },
+                                "src": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": "Image source",
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": "Adds an image to the cover menu"
+                                }
+                            }
+                        },
+			 "_indicatorGraphic": {
+                            "type": "object",
+                            "required": false,
+                            "legend": “Please Submit images for all fields below to indicate what graphics to use”,
+                            "properties": {
+                                "_isComplete": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": “On Completion Graphic”,
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": “When the course is completed this graphic is shown“
+                                },
+				  "_isVisited": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": “Visited Graphic”,
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": “When the course has been viewed once this graphic is shown“
+                                },
+				  "_isLocked": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": “If Course is LOCKED Graphic”,
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": “When the course has been locked this graphic is shown“
+                                },
+				  "_default": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": “Default Graphic”,
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": “This is the Default graphic“
+                                },
+				  "_accessibilityEnabled": {
+                                    "type": "string",
+                                    "required": false,
+                                    "title": “Accessibility Enabled Graphic”,
+                                    "default": "",
+                                    "inputType": "Asset:image",
+                                    "validators": [],
+                                    "help": “If accessibility is enabled this graphic is used“
+                                }
+                            }
+                        }
+                    }
+                }
+	     }
+        },
+        "article": {
+          "type":"object"
+        },
+        "block": {
+          "type":"object"
+        },
+        "component": {
+          "type":"object"
+        }
+      }
+    }
+  }
+}
