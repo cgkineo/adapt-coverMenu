@@ -9,6 +9,14 @@
     "menu": "cover-menu",
     "description": "A carousel-style menu",
     "main": "/js/adapt-cover.js",
+    "assetFields": [
+        "_backgroundGraphic.src",
+        "_indicatorGraphic._isComplete",
+        "_indicatorGraphic._isVisited",
+        "_indicatorGraphic._isLocked",
+        "_indicatorGraphic._default",
+        "_indicatorGraphic._accessibilityEnabled"
+    ],
     "keywords": [
         "adapt-plugin",
         "adapt-menu"
