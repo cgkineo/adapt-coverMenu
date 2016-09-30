@@ -52,7 +52,7 @@
                               "type": "string",
                               "required": false,
                               "title": "Image source",
-                              "default": "",
+                              "default": "course/en/images/menu-item-one.jpg",
                               "inputType": "Asset:image",
                               "validators": [],
                               "help": "Adds an image to the cover menu"
@@ -68,7 +68,7 @@
                                 "type": "string",
                                 "required": false,
                                 "title": "On Completion Graphic",
-                                "default": "",
+                                "default": "course/en/images/origami-menu-three.jpg",
                                 "inputType": "Asset:image",
                                 "validators": [],
                                 "help": "When the course is completed this graphic is shown"
@@ -77,7 +77,7 @@
                                 "type": "string",
                                 "required": false,
                                 "title": "Visited Graphic",
-                                "default": "",
+                                "default": "course/en/images/origami-menu-two.jpg",
                                 "inputType": "Asset:image",
                                 "validators": [],
                                 "help": "When the course has been viewed once this graphic is shown"
@@ -86,7 +86,7 @@
                                 "type": "string",
                                 "required": false,
                                 "title": "If Course is LOCKED Graphic",
-                                "default": "",
+                                "default": "course/en/images/origami-menu-one.jpg",
                                 "inputType": "Asset:image",
                                 "validators": [],
                                 "help": "When the course has been locked this graphic is shown"
@@ -95,7 +95,7 @@
                                 "type": "string",
                                 "required": false,
                                 "title": "Default Graphic",
-                                "default": "",
+                                "default": "course/en/images/origami-menu-one.jpg",
                                 "inputType": "Asset:image",
                                 "validators": [],
                                 "help": "This is the Default graphic"
@@ -104,7 +104,7 @@
                                 "type": "string",
                                 "required": false,
                                 "title": "Accessibility Enabled Graphic",
-                                "default": "",
+                                "default": "course/en/images/origami-menu-one.jpg",
                                 "inputType": "Asset:image",
                                 "validators": [],
                                 "help": "If accessibility is enabled this graphic is used"
