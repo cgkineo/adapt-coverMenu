@@ -1,7 +1,7 @@
-adapt-cover-menu
+adapt-cover-menu-audio
 ===============
 
-The cover menu is a carousel style menu. It has an intro screen that hides the carousel until the user clicks the start button. The menu also includes indicators that show the current selected item, item progress and locked states. The indicators can also be used to navigate between the items.
+The cover menu is a carousel style menu. It has an optional intro screen that hides the carousel until the user clicks the start button. The menu also includes indicators that show the current selected item, item progress and locked states. The indicators can also be used to navigate between the items.
 
 Since the cover menu requires graphical assets to be present to function correctly, an asset pack is included with this menu to get you started quickly.
 
@@ -22,6 +22,19 @@ appears on the menu.
         "_isLocked":"course/en/images/origami-menu-one.jpg",
         "_default":"course/en/images/origami-menu-one.jpg",
         "_accessibilityEnabled": "course/en/images/origami-menu-one.jpg"
+    },
+    "_ariaLabels": {
+        "menuItemPage": "Page one, tab to View button to enter.",
+        "menuViewButton": "Select here to view page one."
+    },
+    "_audio": {
+        "_isEnabled": true,
+        "_showControls": true,
+        "_autoplay": true,
+        "_channel": 0,
+        "_media": {
+            "src": "course/en/audio/***.mp3"
+        }
     }
 }
 ```
@@ -53,5 +66,22 @@ Set the background graphic of the item slide. Images are scaled up/down to fill.
 
 Graphics are required for the various item states. Locked and accessibility are only required if the menu item has been setup to have that state.
 
+Specify the introduction page and menu page in course.json.
 
+```
+"_introCover": {
+    "_introScreen": true
+}
 
+```
+
+----------------------------
+**Version number:**  2.0.2     
+**Framework versions supported:**  2.0.0     
+**Author / maintainer:** DeltaNet with [contributors](https://github.com/deltanet/adapt-cover-menu/graphs/contributors)     
+**Forked from:** City and Guilds Kineo [cgkineo/adapt-cover-menu](https://github.com/cgkineo/adapt-cover-menu) 
+**Accessibility support:** yes  
+**RTL support:** no     
+**Authoring tool support:** yes
+
+----------------------------

@@ -1,5 +1,5 @@
 /*MENU STYLING*/
-.menu {
+.cover-menu {
 	.menu-container {
 		position: relative;
 	}
@@ -61,8 +61,8 @@
 	    border:@button-border;
 	    .no-touch & {
 	        &:hover {
-	            background-color:@button-hover-color;
-	            color:@button-text-hover-color;
+	            background-color:@button-color-hover;
+	            color:@button-text-color-hover;
 	        } 
 	    }
 		&.menu-item-control-left {
@@ -77,6 +77,7 @@
 		@media all and (max-width:@device-width-small) {
 			display: none;
 		}
+		.transition-all-colors;
 	}
 
 
@@ -101,36 +102,90 @@
 
 	.menu-item-inner {
 		text-align: center;
-		max-width: 900px;
 		margin: auto;
-		@media all and (max-width:@device-width-large) {
-			padding: 10px;
+		padding: 10px;
+		background-color: rgba(0,0,0,0.7) !important;
+	    .no-opacity & {
+	        background-image:@transparency-fallback-png !important;
+	    }
+		@media all and (max-width: @device-width-small) {
+			margin: auto;
+        }
+        //  Only show for desktop and tablet
+    	@media all and (min-width: @device-width-medium) {
+	  		position: relative;
+	  		top: 50%;
+	  		left: 50%;
+	  		transform: translate(-50%, -70%);
+	  		-ms-transform: translate(-50%, -70%);
+	  		-webkit-transform: translate(-50%, -70%);
+	  		-moz-transform: translate(-50%, -70%);
+	  		-o-transform: translate(-50%, -70%);
 		}
+		@media all and (max-width: @device-width-medium) {
+			margin-top: 50px;
+        }
 	}
 
+	.audio-inner {
+		display:inline;
+    	float: right;
+	}
+
+	.audio-toggle {
+        color: @item-text-color;
+        background-color: @item-color;
+        padding: @item-padding;
+        .transition-all-colors;
+        &:hover{
+        	color: @item-text-color-hover;
+            background-color: @item-color-hover;
+        }
+        &.hidden {
+	        display: none;
+	    }
+	}
+
+	.hidden {
+        display: none;
+    }
+
 	.menu-item-title {
-		margin-top: 20px;
+		font-size: @menu-title-font-size;
+		font-weight: @menu-title-font-weight;
+		line-height: @menu-title-line-height;
+
+		@media all and (min-width:@device-width-medium) {
+			width: 70%;
+			margin: 0 auto;
+		}
 	}
 
 	.menu-item-title-inner {
 		color:@menu-secondary-font-color;
+		padding: 10px 0px 10px 0px;
+		background-color: @title-background-color;
 	}
 
 	.menu-item-body-inner {
 		color:@menu-secondary-font-color;
-		margin: 20px 0;
+		margin: 20px 10px;
 	}
 
 	.menu-item-assement-details {
 		color:@menu-secondary-font-color;
+		border: 1px solid white;
+		margin-top: 20px;
+	}
+
+	.menu-item-assement-details-inner {
+		padding: 20px;
 	}
 
 	.menu-item-duration {
 		display: block;
 		color:@menu-secondary-font-color;
 	}
-
-
 
 	// Menu Item Indicator Container
 	// =============================
@@ -171,7 +226,7 @@
 		}
 		&.item-intro-indicator {
 			.menu-item-indicator-graphic {
-				opacity:1;
+				opacity:0.3;
 			}
 		}
 
@@ -203,7 +258,6 @@
 	}
 
 	.menu-item-assement-details {
-		display:none;
 		border: 1px solid white;
 		margin-top: 20px;
 	}
@@ -213,7 +267,7 @@
 	}
 
 	.menu-item-spacer {
-		height:130px;
+		height:10px;
 	}
 
 	// Letterbox sized viewports
@@ -253,7 +307,3 @@
 	}
 
 }
-
-
-
-

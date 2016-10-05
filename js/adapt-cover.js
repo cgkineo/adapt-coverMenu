@@ -1,10 +1,3 @@
-/*
-* Cover Menu
-* License - https://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
-* Maintainers - Salamat Ali
-*/
-
-
 define(function(require) {
 
     var Backbone = require('backbone');
@@ -25,30 +18,44 @@ define(function(require) {
             var nthChild = 0;
             this.model.getChildren().each(function(item) {
                 if(item.get('_isAvailable')) {
-                    var assessment = _.find(item.getChildren().toJSON(), function(it) { return typeof it._assessment !== "undefined"; } );
-                    if (assessment != undefined && typeof assessment.assessmentModel != "undefined") {
-                        var scoreAsPercentage = (Adapt.course.get('_isAssessmentAttemptComplete')) ? assessment.assessmentModel.getLastAttemptScoreAsPercent(): null;
+                    var assessmentArticle = item.getChildren().find(function(article) { 
+                        return article.has('_assessment');
+                    });
+
+                    var isAssessment = assessmentArticle != undefined;
+                    if (isAssessment) {
+                        var scoreAsPercentage = assessmentArticle.get('_isAssessmentComplete')
+                            ? assessmentArticle.get('_lastAttemptScoreAsPercent')
+                            : null;
                         var hasScore = (scoreAsPercentage != null && !isNaN(scoreAsPercentage));
                         item.set("_assessment", { 
-                            isComplete : (typeof Adapt.course.get('_isAssessmentAttemptComplete') !== "undefined")
-                                ? Adapt.course.get('_isAssessmentAttemptComplete')
+                            isComplete : assessmentArticle.has('_isAssessmentComplete')
+                                ? assessmentArticle.get('_isAssessmentComplete')
                                 : false,
                             hasScore: hasScore,
                             scoreAsPercentage : scoreAsPercentage,
-                            isPassed : (typeof Adapt.course.get('_isAssessmentPassed') !== "undefined") ? Adapt.course.get('_isAssessmentPassed') : false
+                            isPassed : assessmentArticle.has('_isPass') 
+                                ? assessmentArticle.get('_isPass') 
+                                : false
                         });
                     }
+
                     item.set("_isLocked", false);
                     if (item.get("_lock")) {
                         var contentObjects = item.get("_lock");
                         var completeCount = 0;
-                        for( var i = 0; i < contentObjects.length; i++) if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) completeCount++;
+                        for( var i = 0; i < contentObjects.length; i++) {
+                            if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) {
+                                completeCount++;
+                            }
+                        }
                         if (completeCount < contentObjects.length) {
                             item.set("_isLocked", true);
                         }
                     }
                 }
             });
+
             MenuView.prototype.preRender.call(this);
             this.listenTo(Adapt, "indicator:clicked", this.navigateToCurrentIndex);
             this.listenTo(Adapt, "menuView:ready", this.setupIndicatorLayout);
@@ -61,33 +68,40 @@ define(function(require) {
                 if(item.get('_isAvailable')) {
                     nthChild ++;
                     this.renderMenuItems(item, nthChild);
+                    if(Adapt.config.get('_audio') && Adapt.config.get('_audio')._isEnabled) {
+                        this.renderAudioItems(item);
+                    }
                 }
             }, this));
             this.setupLayout();
             this.listenTo(Adapt, 'pageView:ready menuView:ready', this.setupLegacyFocus);
+            this.$el.addClass('cover-menu');
         },
 
         renderMenuItems: function(item, nthChild) {
-            this.$('.menu-item-container-inner').append(new CoverItemView({
-                model:item, 
-                nthChild:nthChild
-            }).$el);
-            var siblingsLength = this.model.getChildren().models.length;
-            this.$('.menu-item-indicator-container-inner').append(new CoverItemIndicatorView({
-                model:item, 
-                nthChild:nthChild,
-                siblingsLength:siblingsLength
-            }).$el);
+            item.set({'_nthChild':nthChild, '_siblingsLength':this.model.getChildren().models.length});
+
+            this.$('.menu-item-container-inner').append(new CoverItemView({model:item}).$el);
+            this.$('.menu-item-indicator-container-inner').append(new CoverItemIndicatorView({model:item}).$el);
+        },
+
+        renderAudioItems: function(item) {
+            this.$('.menu-item-'+item.get("_id")).prepend(new CoverItemAudioView({model:item}).$el);
         },
 
         setupLayout: function() {
             var width = $("#wrapper").width();
             var height = $(window).height() - $(".navigation").height();
             this.model.set({width:width});
-            this.$(".menu-intro-screen").css({
-                width:width,
-                height:height
-            });
+           if (Adapt.course.get("_coverMenu") && Adapt.course.get("_coverMenu")._introScreen) {
+                this.$(".menu-intro-screen").css({
+                    width:width,
+                    height:height
+                });
+            } else {
+                this.$(".menu-intro-screen").addClass('display-none');
+            }
+
             this.$('.menu-item-container-inner').css({
                 width:width * this.model.getChildren().length + "px",
                 height: (height -$(".menu-item-indicator-container").height()) +"px"
@@ -122,11 +136,10 @@ define(function(require) {
 
         navigateToIntro: function(event) {
             if(event) event.preventDefault();
-            Adapt.navigateToElement(Adapt.course.get("_locationIds")._intro, "contentObjects");
+            Adapt.navigateToElement(Adapt.course.get("_start")._id, "contentObjects");
         },
 
         configureAccessibilityTabbing: function(index) {
-            console.log(index)
             if ($('html').hasClass('accessibility')) {
                 this.$(".menu-item-control").addClass("menu-item-control-hide").attr('tabindex', -1);
                 $('.menu-item-indicator').attr('tabindex', -1);
@@ -202,12 +215,14 @@ define(function(require) {
 
     var CoverItemView = MenuView.extend({
 
+        events:{},
+
         className: function() {
             return [
                 'menu-item',
                 'menu-item-' + this.model.get('_id') ,
-                'nth-child-' + this.options.nthChild,
-                this.options.nthChild % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
+                'nth-child-' + this.model.get('_nthChild'),
+                this.model.get('_nthChild') % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
             ].join(' ');
         },
 
@@ -239,14 +254,72 @@ define(function(require) {
         template:'cover-item'
     });
 
+    var CoverItemAudioView = MenuView.extend({
+
+        events:{
+            'click .audio-toggle': 'toggleAudio'
+        },
+
+        className: "audio-controls",
+
+        preRender: function() {
+            this.listenTo(Adapt, 'audio:updateAudioStatus', this.updateToggle);
+        },
+
+        postRender: function() {
+            this.audioChannel = this.model.get('_coverMenuAudio')._audio._channel;
+            this.elementId = this.model.get("_id");
+            // Hide controls
+            if(this.model.get('_coverMenuAudio')._audio._showControls==false){
+                this.$('.audio-toggle').addClass('hidden');
+            }
+            try {
+                this.audioFile = this.model.get("_coverMenuAudio")._audio._media.src;
+            } catch(e) {
+                console.log('An error has occured loading audio');
+            }
+            // Hide icon if audio is turned off
+            if(Adapt.audio.audioClip[this.audioChannel].status==0){
+                this.$('.audio-toggle').addClass('hidden');
+            }
+            // Set clip ID
+            Adapt.audio.audioClip[this.audioChannel].newID = this.elementId;
+        },
+
+        onAudioEnded: function() {
+            Adapt.trigger('audio:audioEnded', this.audioChannel);
+        },
+
+        toggleAudio: function(event) {
+            if (event) event.preventDefault();
+ 
+            if ($(event.currentTarget).hasClass('playing')) {
+                Adapt.trigger('audio:pauseAudio', this.audioChannel);
+            } else {
+                Adapt.trigger('audio:playAudio', this.audioFile, this.elementId, this.audioChannel);
+            }
+        },
+
+        updateToggle: function(){
+            if(Adapt.audio.audioStatus == 1 && this.model.get('_coverMenuAudio')._audio._showControls==true){
+                this.$('.audio-toggle').removeClass('hidden');
+            } else {
+                this.$('.audio-toggle').addClass('hidden');
+            }
+        }
+
+    }, {
+        template:'cover-item-audio'
+    });
+
     var CoverItemIndicatorView = MenuView.extend({
 
         className: function() {
             return [
                 'menu-item-indicator',
                 'menu-item-indicator-' + this.model.get('_id') ,
-                'nth-child-' + this.options.nthChild,
-                this.options.nthChild % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
+                'nth-child-' + this.model.get('_nthChild'),
+                this.model.get('_nthChild') % 2 === 0  ? 'nth-child-even' : 'nth-child-odd'
             ].join(' ');
         },
 
@@ -259,22 +332,25 @@ define(function(require) {
             if (!this.model.get('_isComplete') && !this.model.get('_isVisited')) {
                 this.setVisitedIfBlocksComplete();
             }
-            if (this.model.get('_assessment') && Adapt.course.get('_isAssessmentAttemptComplete') && !this.model.get('_isComplete')) {
+
+            var isCompletedAssessment = (this.model.get('_assessment') 
+                    && this.model.get('_assessment')._isComplete && !this.model.get('_isComplete'));
+            if (isCompletedAssessment) {
                 this.model.set('_isComplete', true);
             }
         },
 
         setVisitedIfBlocksComplete: function() {
             var completedBlock = this.model.findDescendants('blocks').findWhere({'_isComplete': true});
-            if (completedBlock != undefined)  this.model.set('_isVisited', true);
+            if (completedBlock != undefined) {
+                this.model.set('_isVisited', true);  
+            } 
         },
 
         postRender: function() {
-            var numItems = this.options.siblingsLength
+            var numItems = this.model.get('_siblingsLength');
             var width = 100 / numItems;
-            $(".menu-item-indicator").css({
-                width: width + "%"
-            });
+
             this.$('.menu-item-indicator-graphic').imageready(_.bind(function() {
                 Adapt.trigger("indicator:postRender");
                 this.setReadyStatus();
@@ -283,11 +359,11 @@ define(function(require) {
 
         onItemClicked: function(event) {
             if (event) event.preventDefault();
-            Adapt.trigger("indicator:clicked", this.$el.index());
+            Adapt.trigger("indicator:clicked", this.$el.index() - 1);
         },
 
         handleNavigation: function(index) {
-            if (this.$el.index() == index) {
+            if (this.$el.index() == index + 1) {
                 this.$el.addClass("selected");
             } else {
                 this.$el.removeClass("selected");
@@ -301,6 +377,10 @@ define(function(require) {
     Adapt.on('router:menu', function(model) {
         $('#wrapper').append(new CoverView({model:model}).$el);
         new CoverExtensions({model:model});
+    });
+
+    Adapt.on('menuView:postRender', function(view) {
+        $('.navigation-back-button').addClass('display-none');
     });
     
 });
