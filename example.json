@@ -1,14 +1,68 @@
+// in course.json _globals
+"_coverMenuAudio": {
+    "ariaRegion": "Menu",
+    "menuItem": "Menu item.",
+    "menuEnd": "You have reached the end of the menu."
+}
+
 // in contentObjects.json, on each object to appear on the menu. This replaces the "_graphic" data object
-"_coverMenu":{
-    "_backgroundGraphic": {
-        "alt": "This is a picture of Adapt's origami birds.",
-        "src": "course/en/images/menu-item-one.jpg"
-    },
-    "_indicatorGraphic": {
-        "_isComplete": "course/en/images/origami-menu-three.jpg",
-        "_isVisited": "course/en/images/origami-menu-two.jpg",
-        "_isLocked":"course/en/images/origami-menu-one.jpg",
-        "_default":"course/en/images/origami-menu-one.jpg",
-        "_accessibilityEnabled": "course/en/images/origami-menu-one.jpg"
+//
+// _type = menu
+"_coverMenuAudio":{
+    "_introItemGraphic": {
+        "alt": "",
+        "src": "course/en/images/menu_returnArrow.png",
+        "title": ""
     }
+}
+// _type = page
+
+{
+    "_id":"co-05",
+    "_parentId":"course",
+    "_type":"page",
+    "_classes":"",
+    "title":"Welcome to Adapt Learning",
+    "displayTitle":"Welcome to Adapt Learning",
+    "body":"This page contains a working Adapt page with all core bundled components and plugins working.",
+    "_coverMenuAudio":{
+        "_backgroundGraphic": {
+            "alt": "",
+            "src": ""
+        },
+        "_indicatorGraphic": {
+            "_isComplete": "course/en/images/menu_btn1_complete.png",
+            "_isVisited": "course/en/images/menu_btn1_started.png",
+            "_isLocked":"course/en/images/menu_btn1_notStarted.png",
+            "_default":"course/en/images/menu_btn1_notStarted.png",
+            "_isPassed": "course/en/images/menu_btn1_passed.png",
+            "_isFailed": "course/en/images/menu_btn1_failed.png",
+            "_accessibilityEnabled": "course/en/images/menu_btn1_notStarted.png"
+        },
+        "_ariaLabels": {
+            "menuItemPage": "Page one, tab to View button to enter.",
+            "menuViewButton": "Select here to view page one."
+        },
+        "_audio": {
+            "_isEnabled": true,
+            "_showControls": true,
+            "_autoplay": true,
+            "_channel": 0,
+            "_media": {
+                "src": "course/en/audio/***.mp3"
+            }
+        }
+    },
+    "linkText":"Start",
+    "linkVisitedText": "Revisit",
+    "durationLabel": "Duration:",
+    "duration":"2 mins",
+    "_pageLevelProgress": {
+        "_isEnabled": true
+    }
+}
+
+// set the intro screen on/off in all menus in the course.json
+"_coverMenuAudio":{
+    "_introScreen": true
 }

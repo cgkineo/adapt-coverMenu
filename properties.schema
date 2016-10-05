@@ -9,8 +9,28 @@
       "required": true,
       "default": "Menu",
       "inputType": "Text",
-      "validators": [],
-      "translatable": true
+      "validators": []
+    },
+    "durationLabel": {
+      "type": "string",
+      "required": true,
+      "default": "Duration:",
+      "inputType": "Text",
+      "validators": []
+    },
+    "menuItem": {
+      "type": "string",
+      "required": true,
+      "default": "Menu item.",
+      "inputType": "Text",
+      "validators": []
+    },
+    "menuEnd": {
+      "type": "string",
+      "required": true,
+      "default": "You have reached the end of the menu.",
+      "inputType": "Text",
+      "validators": []
     }
   },
   "properties": {
@@ -22,98 +42,232 @@
           "type":"object"
         },
         "course": {
-          "type":"object"
+          "type": "object",
+          "properties": {
+            "_coverMenuAudio": {
+              "type": "object",
+              "required": false,
+              "legend": "Cover Menu Audio",
+              "properties": {
+                "_introScreen": {
+                  "type":"boolean",
+                  "required":false,
+                  "title": "Menu Intro Screen",
+                  "inputType": { "type": "Boolean", "options": [false, true]},
+                  "validators": [],
+                  "help": "Turns the menu intro screen on and off. Acceptable values are true and false."
+                }
+              }
+            }
+          }
+        }
         },
         "contentobject": {
-          "type":"object",
-          "required": false,
-          "legend": "Cover Menu image",
-      	  "properties":{
-      	   	"_coverMenu": {
-                "type": "object",
-                "required": false,
-                "legend": "Cover Menu image",
-                "properties": {
-                    "_backgroundGraphic": {
-                        "type": "object",
-                        "required": false,
-                        "legend": "Cover Menu image",
-                        "properties": {
-                           "alt": {
-                              "type": "string",
-                              "required": false,
-                              "title": "Add your Image Alt Here ",
-                              "default": "",
-                              "inputType": "Text",
-                              "validators": [],
-                              "help": "This Alt tag is for the accessible part of the course"
-                            },
-                            "src": {
-                              "type": "string",
-                              "required": false,
-                              "title": "Image source",
-                              "default": "course/en/images/menu-item-one.jpg",
-                              "inputType": "Asset:image",
-                              "validators": [],
-                              "help": "Adds an image to the cover menu"
-                            }
-                        }
+          "type": "object",
+          "properties": {
+            "_coverMenuAudio": {
+              "type": "object",
+              "required": false,
+              "legend": "Cover Menu Audio",
+              "properties": {
+                "_introItemGraphic": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Intro Menu Item Graphic",
+                  "help": "This is only required for menus.",
+                  "properties": {
+                    "alt": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Alternative text for this items image"
                     },
-	                  "_indicatorGraphic": {
-                        "type": "object",
-                        "required": false,
-                        "legend": "Please Submit images for all fields below to indicate what graphics to use",
-                        "properties": {
-                            "_isComplete": {
-                                "type": "string",
-                                "required": false,
-                                "title": "On Completion Graphic",
-                                "default": "course/en/images/origami-menu-three.jpg",
-                                "inputType": "Asset:image",
-                                "validators": [],
-                                "help": "When the course is completed this graphic is shown"
-                            },
-                            "_isVisited": {
-                                "type": "string",
-                                "required": false,
-                                "title": "Visited Graphic",
-                                "default": "course/en/images/origami-menu-two.jpg",
-                                "inputType": "Asset:image",
-                                "validators": [],
-                                "help": "When the course has been viewed once this graphic is shown"
-                            },
-                            "_isLocked": {
-                                "type": "string",
-                                "required": false,
-                                "title": "If Course is LOCKED Graphic",
-                                "default": "course/en/images/origami-menu-one.jpg",
-                                "inputType": "Asset:image",
-                                "validators": [],
-                                "help": "When the course has been locked this graphic is shown"
-                            },
-                            "_default": {
-                                "type": "string",
-                                "required": false,
-                                "title": "Default Graphic",
-                                "default": "course/en/images/origami-menu-one.jpg",
-                                "inputType": "Asset:image",
-                                "validators": [],
-                                "help": "This is the Default graphic"
-                            },
-                            "_accessibilityEnabled": {
-                                "type": "string",
-                                "required": false,
-                                "title": "Accessibility Enabled Graphic",
-                                "default": "course/en/images/origami-menu-one.jpg",
-                                "inputType": "Asset:image",
-                                "validators": [],
-                                "help": "If accessibility is enabled this graphic is used"
-                            }
-                        }
+                    "src": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Image for menu intro"
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
                     }
+                  }
+                },
+                "_backgroundGraphic": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Page Background Graphic",
+                  "properties": {
+                    "alt": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Alternative text for this items image"
+                    },
+                    "src": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Background image for this page"
+                    }
+                  }
+                },
+                "_indicatorGraphic": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Page Indicator Graphic",
+                  "help": "Select images to represent user progress for this page on the cover menu",
+                  "properties": {
+                    "_isComplete": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for completed"
+                    },
+                    "_isVisited": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for visited"
+                    },
+                    "_isLocked": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for locked"
+                    },
+                    "_default": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for default"
+                    },
+                    "_isPassed": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for passed"
+                    },
+                    "_isFailed": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for failed"
+                    },
+                    "_accessibilityEnabled": {
+                      "type": "string",
+                      "required": true,
+                      "default": "",
+                      "inputType": "Asset:image",
+                      "validators": [],
+                      "help": "Cover menu image for accesibility enabled"
+                    }
+                  }
+                },
+                "_ariaLabels": {
+                  "type": "object",
+                  "required": false,
+                  "properties": {
+                    "menuItemPage": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "title": "Menu - Aria Label",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Menu aria label for this page"
+                    },
+                    "menuViewButton": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "title": "Menu Button - Aria Label",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Aria label for the menu link for this page"
+                    }
+                  }
+                },
+                "_audio": {
+                  "type": "object",
+                  "required": false,
+                  "properties": {
+                    "_isEnabled": {
+                      "type":"boolean",
+                      "required":true,
+                      "title": "Enabled",
+                      "inputType": { "type": "Boolean", "options": [false, true]},
+                      "validators": [],
+                      "help": "Turns audio on and off. Acceptable values are true and false."
+                    },
+                    "_showControls": {
+                      "type":"boolean",
+                      "required":true,
+                      "title": "Show Audio Controls",
+                      "inputType": { "type": "Boolean", "options": [false, true]},
+                      "validators": []
+                    },
+                    "_autoplay": {
+                      "type":"boolean",
+                      "required":false,
+                      "title": "Autoplays Audio",
+                      "inputType": { "type": "Boolean", "options": [false, true]},
+                      "validators": [],
+                      "help": "Turns Audio Autoplay on and off. Acceptable values are true and false."
+                    },
+                    "_channel": {
+                      "type":"number",
+                      "required":true,
+                      "default": 0,
+                      "title": "Channel Number",
+                      "inputType": "Number",
+                      "validators": ["required", "number"],
+                      "help": "Channels represent the number of items defined in the course.json settings, by default there are 0, 1 and 2 available (3 _audioItems in the array)"
+                    },
+                    "_media": {
+                      "type":"object",
+                      "required":true,
+                      "properties":{
+                        "src": {
+                          "type":"string",
+                          "required":true,
+                          "title": "Menu Audio",
+                          "inputType": "Asset:audio",
+                          "validators": ["required"],
+                          "help": "This is the audio source used when page is viewed at mobile resolution"
+                        }
+                      }
+                    }
+                  }
                 }
+              }
             }
-      	  }
+          }
         },
         "article": {
           "type":"object"
@@ -127,4 +281,3 @@
       }
     }
   }
-}
