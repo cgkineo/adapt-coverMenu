@@ -47,17 +47,19 @@ define(function(require) {
                         });
                     }
 
-                    item.set("_isLocked", false);
-                    if (item.get("_lock")) {
-                        var contentObjects = item.get("_lock");
-                        var completeCount = 0;
-                        for( var i = 0; i < contentObjects.length; i++) {
-                            if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) {
-                                completeCount++;
+                    if (!item.checkLocking) {
+                        item.set("_isLocked", false);
+                        if (item.get("_lock")) {
+                            var contentObjects = item.get("_lock");
+                            var completeCount = 0;
+                            for( var i = 0; i < contentObjects.length; i++) {
+                                if (Adapt.contentObjects.findWhere({_id:contentObjects[i]}).get("_isComplete")) {
+                                    completeCount++;
+                                }
                             }
-                        }
-                        if (completeCount < contentObjects.length) {
-                            item.set("_isLocked", true);
+                            if (completeCount < contentObjects.length) {
+                                item.set("_isLocked", true);
+                            }
                         }
                     }
                 }
@@ -104,9 +106,10 @@ define(function(require) {
                 height:height,
                 overflow:"hidden"
             });
-            if(this.model.get("_revealedItems")) {
+            if(!this.model.get('_showIntro')) {
                 this.revealItems();
             }
+            doNotShowIntro = true;
             this.setupNavigation();
         },
 
@@ -180,22 +183,14 @@ define(function(require) {
 
         revealItems: function(event) {
             if(event) event.preventDefault();
-            if(this.model.get("_revealedItems")) {
-                this.$(".menu-intro-screen").css({
-                    top:"-100%"
-                });
-                this.$(".menu-item-container").css({
-                    opacity:1
-                });
-            } else {
-                this.$(".menu-intro-screen").velocity({
-                    top:"-100%"
-                }, 1000);
-                this.$(".menu-item-container").velocity({
-                    opacity:1
-                }, 1000);
-            }
-            this.model.set({_revealedItems: true})
+            
+            this.$(".menu-intro-screen").velocity({
+                top:"-100%"
+            }, event ? 1000 : 0);
+            this.$(".menu-item-container").velocity({
+                opacity:1
+            }, event ? 1000 : 0);
+            
             Adapt.trigger("cover:revealed");
         },
 
@@ -309,10 +304,19 @@ define(function(require) {
     }, {
         template:'cover-item-indicator'
     });
-    
+
+    // once we return to the menu from a page we do not want to see the intro screen
+    var doNotShowIntro = false;
+
+    Adapt.once('router:page', function(model) {
+        doNotShowIntro = true;
+    });
+
     Adapt.on('router:menu', function(model) {
+        // on course launch show intro screen if navigating directly to the menu
+        model.set('_showIntro', !doNotShowIntro);
+
         $('#wrapper').append(new CoverView({model:model}).$el);
         new CoverExtensions({model:model});
     });
-    
 });
