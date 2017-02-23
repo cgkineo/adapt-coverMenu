@@ -67,7 +67,6 @@ define(function(require) {
 
             MenuView.prototype.preRender.call(this);
             this.listenTo(Adapt, "indicator:clicked", this.navigateToCurrentIndex);
-            this.listenTo(Adapt, "menuView:ready", this.setupIndicatorLayout);
         },
         
         postRender: function() {
@@ -80,7 +79,6 @@ define(function(require) {
                 }
             }, this));
             this.setupLayout();
-            this.listenTo(Adapt, 'pageView:ready menuView:ready', this.setupLegacyFocus);
         },
 
         renderMenuItems: function(item, nthChild) {
