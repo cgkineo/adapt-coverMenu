@@ -5,7 +5,7 @@ The cover menu is a carousel style menu. It has an intro screen that hides the c
 
 Since the cover menu requires graphical assets to be present to function correctly, an asset pack is included with this menu to get you started quickly.
 
-###Example JSON
+### Example JSON
 
 Configuration options are explained below. The "_coverMenu" object replaces the "_graphic" object for each object in contentObjects.json that
 appears on the menu.
@@ -26,9 +26,9 @@ appears on the menu.
 }
 ```
 
-###Config options
+### Config options
 
-#####Background Graphic
+##### Background Graphic
 
 ```
 "_backgroundGraphic": {
@@ -39,7 +39,7 @@ appears on the menu.
 
 Set the background graphic of the item slide. Images are scaled up/down to fill.
 
-####Indicators
+#### Indicators
 
 ```
 "_indicatorGraphic": {
@@ -52,6 +52,3 @@ Set the background graphic of the item slide. Images are scaled up/down to fill.
 ```
 
 Graphics are required for the various item states. Locked and accessibility are only required if the menu item has been setup to have that state.
-
-
-
