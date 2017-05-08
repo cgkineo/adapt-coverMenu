@@ -1,11 +1,8 @@
-define(function(require) {
-
-    var Backbone = require('backbone');
-    var Adapt = require('coreJS/adapt');
-    var MenuView = require('coreViews/menuView');
-
-    /*use this view to add extra funcitonality to Cover*/
-
+define([
+	'core/js/adapt',
+	'/core/js/views/menuView'
+], function(Adapt, MenuView) {
+    /*use this view to add extra functionality to Cover*/
     var CoverExtensionsView = Backbone.View.extend({
 
     	initialize: function() {

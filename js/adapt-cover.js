@@ -1,16 +1,10 @@
-/*
-* Cover Menu
-* License - https://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
-* Maintainers - Salamat Ali
-*/
+define([
+    'core/js/adapt',
+    'core/js/views/menuView'
+], function(Adapt, MenuView) {
 
-
-define(function(require) {
-
-    var Backbone = require('backbone');
-    var Adapt = require('coreJS/adapt');
-    var MenuView = require('coreViews/menuView');
-    var CoverExtensions = require("menu/adapt-cover-menu/js/adapt-cover-extensions");
+    // once we return to the menu from a page we do not want to see the intro screen
+    var doNotShowIntro = false;
     
     var CoverView = MenuView.extend({
 
@@ -29,25 +23,19 @@ define(function(require) {
                         return article.has('_assessment');
                     });
 
-                    var isAssessment = assessmentArticle != undefined;
+                    var isAssessment = assessmentArticle !== undefined;
                     if (isAssessment) {
-                        var scoreAsPercentage = assessmentArticle.get('_isAssessmentComplete')
-                            ? assessmentArticle.get('_lastAttemptScoreAsPercent')
-                            : null;
-                        var hasScore = (scoreAsPercentage != null && !isNaN(scoreAsPercentage));
+                        var scoreAsPercentage = assessmentArticle.get('_isAssessmentComplete') ? assessmentArticle.get('_lastAttemptScoreAsPercent') : null;
+                        var hasScore = (scoreAsPercentage !== null && !isNaN(scoreAsPercentage));
                         item.set("_assessment", { 
-                            isComplete : assessmentArticle.has('_isAssessmentComplete')
-                                ? assessmentArticle.get('_isAssessmentComplete')
-                                : false,
+                            isComplete : assessmentArticle.has('_isAssessmentComplete') ? assessmentArticle.get('_isAssessmentComplete') : false,
                             hasScore: hasScore,
                             scoreAsPercentage : scoreAsPercentage,
-                            isPassed : assessmentArticle.has('_isPass') 
-                                ? assessmentArticle.get('_isPass') 
-                                : false
+                            isPassed : assessmentArticle.has('_isPass') ? assessmentArticle.get('_isPass') : false
                         });
                     }
 
-                    if (!item.checkLocking) {
+                    if (!item.checkLocking) {// fall back to use internal locking logic if Adapt 2.0.9 or earlier
                         item.set("_isLocked", false);
                         if (item.get("_lock")) {
                             var contentObjects = item.get("_lock");
@@ -71,18 +59,19 @@ define(function(require) {
         
         postRender: function() {
             this.listenTo(Adapt, "device:resize", this.setupLayout);
+            
             var nthChild = 0;
             this.model.getChildren().each(_.bind(function(item) {
                 if(item.get('_isAvailable')) {
-                    nthChild ++;
-                    this.renderMenuItems(item, nthChild);
+                    this.renderMenuItems(item, ++nthChild);
                 }
             }, this));
+
             this.setupLayout();
         },
 
         renderMenuItems: function(item, nthChild) {
-            item.set({'_nthChild':nthChild, '_siblingsLength':this.model.getChildren().models.length});
+            item.set({ '_nthChild':nthChild, '_siblingsLength': this.model.getChildren().models.length });
 
             this.$('.menu-item-container-inner').append(new CoverItemView({model:item}).$el);
             this.$('.menu-item-indicator-container-inner').append(new CoverItemIndicatorView({model:item}).$el);
@@ -91,18 +80,18 @@ define(function(require) {
         setupLayout: function() {
             var width = $("#wrapper").width();
             var height = $(window).height() - $(".navigation").height();
-            this.model.set({width:width});
+            this.model.set({ width: width });
             this.$(".menu-intro-screen").css({
-                width:width,
-                height:height
+                width: width,
+                height: height
             });
             this.$('.menu-item-container-inner').css({
-                width:width * this.model.getChildren().length + "px",
+                width: width * this.model.getChildren().length + "px",
                 height: (height -$(".menu-item-indicator-container").height()) +"px"
             });
             $(".menu").css({
-                height:height,
-                overflow:"hidden"
+                height: height,
+                overflow: "hidden"
             });
             if(!this.model.get('_showIntro')) {
                 this.revealItems();
@@ -113,7 +102,7 @@ define(function(require) {
 
         setupNavigation: function() {
             if(!this.model.get("_coverIndex")) {
-                this.model.set({_coverIndex:0});
+                this.model.set({ _coverIndex: 0 });
                 this.navigateToCurrentIndex(this.model.get("_coverIndex"));
             } else if(this.model.get("_coverIndex")) {
                 this.navigateToCurrentIndex(this.model.get("_coverIndex"));
@@ -124,7 +113,7 @@ define(function(require) {
             this.$('.menu-item-container-inner').velocity({
                 marginLeft:-(index * this.model.get("width")) + "px"
             });
-            this.model.set({_coverIndex:index});
+            this.model.set({ _coverIndex: index });
             Adapt.trigger("cover:navigate", this.model.get("_coverIndex"));
             this.configureNavigationControls(index);
         },
@@ -144,7 +133,7 @@ define(function(require) {
         },
 
         configureNavigationControls: function(index) {
-            if(index == 0) {
+            if(index === 0) {
                 this.$(".menu-item-control-left").addClass("menu-item-control-hide");
                 this.$(".menu-item-control-right").removeClass("menu-item-control-hide");
             } else if(index == this.model.getChildren().length - 1) {
@@ -157,25 +146,35 @@ define(function(require) {
 
         navigateLeft: function(event) {
             if(event) event.preventDefault();
+
             var currentIndex = this.model.get("_coverIndex");
             currentIndex--;
+
             this.configureNavigationControls(currentIndex);
-            this.model.set({_coverIndex:currentIndex});
+
+            this.model.set({ _coverIndex: currentIndex });
+
             this.$('.menu-item-container-inner').velocity({
                 marginLeft:-(this.model.get("_coverIndex") * this.model.get("width")) + "px"
             });
+
             Adapt.trigger("cover:navigate", this.model.get("_coverIndex"));
         },
 
         navigateRight: function(event) {
             if(event) event.preventDefault();
+
             var currentIndex = this.model.get("_coverIndex");
             currentIndex++;
+
             this.configureNavigationControls(currentIndex);
-            this.model.set({_coverIndex:currentIndex});
+
+            this.model.set({ _coverIndex: currentIndex });
+
             this.$('.menu-item-container-inner').velocity({
                 marginLeft:-(this.model.get("_coverIndex") * this.model.get("width")) + "px"
             });
+
             Adapt.trigger("cover:navigate", this.model.get("_coverIndex"));
         },
 
@@ -260,8 +259,10 @@ define(function(require) {
                 this.setVisitedIfBlocksComplete();
             }
 
-            var isCompletedAssessment = (this.model.get('_assessment') 
-                    && this.model.get('_assessment')._isComplete && !this.model.get('_isComplete'));
+            var isCompletedAssessment = (this.model.get('_assessment') && 
+                this.model.get('_assessment')._isComplete &&
+                !this.model.get('_isComplete'));
+
             if (isCompletedAssessment) {
                 this.model.set('_isComplete', true);
             }
@@ -269,7 +270,7 @@ define(function(require) {
 
         setVisitedIfBlocksComplete: function() {
             var completedBlock = this.model.findDescendants('blocks').findWhere({'_isComplete': true});
-            if (completedBlock != undefined) {
+            if (completedBlock !== undefined) {
                 this.model.set('_isVisited', true);  
             } 
         },
@@ -302,10 +303,7 @@ define(function(require) {
     }, {
         template:'cover-item-indicator'
     });
-
-    // once we return to the menu from a page we do not want to see the intro screen
-    var doNotShowIntro = false;
-
+    
     Adapt.once('router:page', function(model) {
         doNotShowIntro = true;
     });

@@ -1,8 +1,7 @@
 {
     "name": "adapt-cover-menu",
-    "repository": "git://github.com/cgkineo/adapt-cover-menu",
     "framework": "^2.0.0",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "homepage": "https://github.com/cgkineo/adapt-cover-menu",
     "issues": "https://github.com/cgkineo/adapt-cover-menu/issues/",
     "displayName": "Cover Menu",
