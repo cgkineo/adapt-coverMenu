@@ -88,7 +88,7 @@ define([
             });
             this.$('.menu-item-container-inner').css({
                 width: width * this.model.getChildren().length + "px",
-                height: (height -$(".menu-item-indicator-container").height()) +"px"
+                height: height +"px"
             });
             $(".menu").css({
                 height: height,
