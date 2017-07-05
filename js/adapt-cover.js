@@ -1,7 +1,8 @@
 define([
     'core/js/adapt',
-    'core/js/views/menuView'
-], function(Adapt, MenuView) {
+    'core/js/views/menuView',
+    './adapt-cover-extensions'
+], function(Adapt, MenuView, CoverExtensions) {
 
     // once we return to the menu from a page we do not want to see the intro screen
     var doNotShowIntro = false;

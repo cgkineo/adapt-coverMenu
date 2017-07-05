@@ -1,6 +1,6 @@
 define([
 	'core/js/adapt',
-	'/core/js/views/menuView'
+	'core/js/views/menuView'
 ], function(Adapt, MenuView) {
     /*use this view to add extra functionality to Cover*/
     var CoverExtensionsView = Backbone.View.extend({
