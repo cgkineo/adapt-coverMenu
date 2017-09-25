@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "id": "http://jsonschema.net",
+  "$ref": "http://localhost/plugins/content/menu/model.schema",
+  "globals": {
+    "durationLabel": {
+      "type": "string",
+      "default": "Duration: ",
+      "title": "Duration label",
+      "inputType": "Text",
+      "translatable": true
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Start",
+      "title": "Button text",
+      "inputType": "Text",
+      "translatable": true
+    }
+  },
+  "properties": {
+    "pluginLocations": {
+      "type": "object",
+      "properties": {
+        "course": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,16 @@
 {
-    "name": "adapt-cover-menu",
-    "framework": "^2.0.0",
-    "version": "2.0.2",
-    "homepage": "https://github.com/cgkineo/adapt-cover-menu",
-    "issues": "https://github.com/cgkineo/adapt-cover-menu/issues/",
-    "displayName": "Cover Menu",
-    "menu": "cover-menu",
-    "description": "A carousel-style menu",
-    "main": "/js/adapt-cover.js",
-    "keywords": [
-        "adapt-plugin",
-        "adapt-menu"
-    ],
-    "license": "GPLv3"
+	"name": "adapt-coverMenu",
+	"version": "3.0.0",
+	"framework": ">=2.2",
+	"displayName": "Cover Menu",
+	"menu": "coverMenu",
+	"targetAttribute": "_coverMenu",
+	"description": "A carousel style menu",
+	"main": "/js/adapt-coverMenu.js",
+	"keywords": [
+		"adapt-plugin",
+		"adapt-menu"
+	],
+	"license": "GPL-3.0",
+	"homepage": "https://github.com/cgkineo/adapt-coverMenu"
 }

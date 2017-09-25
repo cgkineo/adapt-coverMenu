@@ -1,54 +1,18 @@
-adapt-cover-menu
-===============
+# Cover Menu
 
-The cover menu is a carousel style menu. It has an intro screen that hides the carousel until the user clicks the start button. The menu also includes indicators that show the current selected item, item progress and locked states. The indicators can also be used to navigate between the items.
+A carousel style menu.
 
-Since the cover menu requires graphical assets to be present to function correctly, an asset pack is included with this menu to get you started quickly.
+## Installation
 
-### Example JSON
+* With [Adapt CLI](https://github.com/adaptlearning/adapt-cli) installed, run `adapt install coverMenu`. Alternatively, download the ZIP and extract into the src > menu directory.
+* Run an appropriate Grunt task.
 
-Configuration options are explained below. The "_coverMenu" object replaces the "_graphic" object for each object in contentObjects.json that
-appears on the menu.
+## Usage
 
-```
-"_coverMenu":{
-    "_backgroundGraphic": {
-        "alt": "This is a picture of Adapt's origami birds.",
-        "src": "course/en/images/menu-item-one.jpg"
-    },
-    "_indicatorGraphic": {
-        "_isComplete": "course/en/images/origami-menu-three.jpg",
-        "_isVisited": "course/en/images/origami-menu-two.jpg",
-        "_isLocked":"course/en/images/origami-menu-one.jpg",
-        "_default":"course/en/images/origami-menu-one.jpg",
-        "_accessibilityEnabled": "course/en/images/origami-menu-one.jpg"
-    }
-}
-```
+* Navigation is achieved by selecting the arrows or item indicators.
+* The indicators also show item progress.
+* On smaller devices, menu items are stacked in a scrollable container.
 
-### Config options
+## Attributes
 
-##### Background Graphic
-
-```
-"_backgroundGraphic": {
-    "alt": "This is a picture of Adapt's origami birds.",
-    "src": "course/en/images/menu-item-one.jpg"
- },
-```
-
-Set the background graphic of the item slide. Images are scaled up/down to fill.
-
-#### Indicators
-
-```
-"_indicatorGraphic": {
-    "_isComplete": "course/en/images/origami-menu-three.jpg",
-    "_isVisited": "course/en/images/origami-menu-two.jpg",
-    "_isLocked":"course/en/images/origami-menu-one.jpg",
-    "_default":"course/en/images/origami-menu-one.jpg",
-    "_accessibilityEnabled": "course/en/images/origami-menu-one.jpg"
-}
-```
-
-Graphics are required for the various item states. Locked and accessibility are only required if the menu item has been setup to have that state.
+Cover Menu utilises Adapt’s standard [content object](https://github.com/adaptlearning/adapt_framework/wiki/Creating-your-first-course#contentobjectsjson) attributes.
