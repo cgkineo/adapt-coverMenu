@@ -1,127 +1,145 @@
 .cover-menu {
 	overflow: hidden;
-}
 
-.menu-item-container {
-	position: relative;
-}
-
-.menu-item-container-inner {
-	transition: margin-left 0.4s ease-in-out;
-	.no-transition & {
-		transition: inherit;
+	.menu-item-container {
+		position: relative;
 	}
-}
 
-.menu-item-inner {
-	max-width: 900px;
-	margin: 0 auto;
-}
+	.menu-item-container-inner {
+		transition: margin-left 0.4s ease-in-out;
 
-.menu-item-content {
-	padding: @menu-block-padding-top @menu-block-padding-right @menu-block-padding-bottom @menu-block-padding-left;
-}
-
-.menu-item {
-	float: left;
-	background-color: @menu-item-color;
-	background-position: center;
-	background-size: cover;
-	color: @menu-item-text-color;
-	&:nth-child(even) {
-		background-color: spin(@menu-item-color, -20);
+		.no-transition & {
+			transition: inherit;
+		}
 	}
-}
 
-.menu-item-title {
-	.menu-title;
-	margin-bottom: @menu-block-title-margin-bottom;
-}
-
-.menu-item-body,
-.menu-item-duration {
-	margin-bottom: @menu-block-body-margin-bottom;
-}
-
-.menu-item-button {
-	.locked &,
-	.no-touch .locked &:hover {
-		background-color: @disabled-color;
-		color: @disabled-color-inverted;
-		cursor: default;
+	.menu-item-inner {
+		max-width: 900px;
+		margin: 0 auto;
 	}
-}
 
-.menu-item-control.icon {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	&.left {
-		left: 0;
+	.menu-item-content {
+		padding: @menu-block-padding-top @menu-block-padding-right @menu-block-padding-bottom @menu-block-padding-left;
 	}
-	&.right {
+
+	.menu-item {
+		float: left;
+		background-color: @menu-item-color;
+		background-position: center;
+		background-size: cover;
+		color: @menu-item-text-color;
+
+		&:nth-child(even) {
+			background-color: spin(@menu-item-color, -20);
+		}
+
+		&.locked,
+		.no-touch &:hover .locked {
+			.menu-item-button {
+				background-color: @disabled-color;
+				color: @disabled-color-inverted;
+				cursor: default;
+			}
+		}
+
+		&.selected {
+			.menu-item-indicator-button {
+				border-color: @menu-item-progress-fill-color;
+				cursor: default;
+			}
+
+			.menu-item-indicator-button-inner {
+				background-color: @menu-item-progress-fill-color;
+			}
+		}
+
+		&.visited {
+			.menu-item-indicator-button-inner {
+				width: 7px;
+				border-radius: 14px 0 0 14px;
+			}
+		}
+
+		&.completed {
+			.menu-item-indicator-button-inner {
+				width: 14px;
+				border-radius: 50%;
+			}
+		}
+	}
+
+	.menu-item-title {
+		.menu-title;
+		margin-bottom: @menu-block-title-margin-bottom;
+	}
+
+	.menu-item-body,
+	.menu-item-duration {
+		margin-bottom: @menu-block-body-margin-bottom;
+	}
+
+	.menu-item-control.icon {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+
+		&.left {
+			left: 0;
+		}
+
+		&.right {
+			right: 0;
+		}
+
+		@media (max-width: @device-width-medium) {
+			display: none;
+		}
+	}
+
+	.menu-item-indicator-container {
+		position: fixed;
 		right: 0;
-	}
-	@media (max-width: @device-width-medium) {
-		display: none;
-	}
-}
+		bottom: 0;
+		left: 0;
+		text-align: center;
 
-.menu-item-indicator-container {
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	text-align: center;
-	@media (max-width: @device-width-medium) {
-		display: none;
+		@media (max-width: @device-width-medium) {
+			display: none;
+		}
 	}
-}
 
-.menu-item-indicator-container-inner {
-	display: inline-block;
-}
-
-.menu-item-indicator.menu-item {
-	background-color: transparent;
-}
-
-.menu-item-indicator-button {
-	position: relative;
-	width: 24px;
-	height: 24px;
-	border: 3px @menu-item-progress-color solid;
-	border-radius: 50%;
-	.selected & {
-		border-color: @menu-item-progress-fill-color;
-		cursor: default;
+	.menu-item-indicator-container-inner {
+		display: inline-block;
 	}
-	.no-touch &:hover {
-		.transition-border-color;
-		border-color: @menu-item-progress-fill-color;
-	}
-}
 
-.menu-item-indicator-button-inner {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	height: 14px;
-	margin: -7px 0 0 -7px;
-	background-color: @menu-item-progress-color;
-	.visited & {
-		width: 7px;
-		border-radius: 14px 0 0 14px;
+	.menu-item-indicator.menu-item {
+		background-color: transparent;
 	}
-	.completed & {
-		width: 14px;
+
+	.menu-item-indicator-button {
+		position: relative;
+		width: 24px;
+		height: 24px;
+		border: 3px @menu-item-progress-color solid;
 		border-radius: 50%;
+
+		.no-touch &:hover {
+			.transition-border-color;
+			border-color: @menu-item-progress-fill-color;
+
+			.menu-item-indicator-button-inner {
+				.transition-background-color;
+				background-color: @menu-item-progress-fill-color;
+			}
+		}
 	}
-	.selected & {
-		background-color: @menu-item-progress-fill-color;
-	}
-	.no-touch .menu-item-indicator-button:hover & {
-		.transition-background-color;
-		background-color: @menu-item-progress-fill-color;
+
+	.menu-item-indicator-button-inner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 14px;
+		margin: -7px 0 0 -7px;
+		background-color: @menu-item-progress-color;
 	}
 }
