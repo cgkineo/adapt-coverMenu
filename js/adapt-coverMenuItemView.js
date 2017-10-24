@@ -3,7 +3,7 @@ define([ "core/js/views/adaptView", "core/js/adapt" ], function(AdaptView, Adapt
 	var CoverMenuItemView = AdaptView.extend({
 
 		className: function() {
-			var classes = "menu-item";
+			var classes = "cover-menu-item";
 			var modelClasses = this.model.get("_classes");
 
 			if (modelClasses) classes += " " + modelClasses;
@@ -16,7 +16,7 @@ define([ "core/js/views/adaptView", "core/js/adapt" ], function(AdaptView, Adapt
 		},
 
 		events: {
-			"click .menu-item-button": "onClick"
+			"click .cover-menu-item-button": "onClick"
 		},
 
 		preRender: function() {

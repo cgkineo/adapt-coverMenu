@@ -12,7 +12,7 @@ define([
 		},
 
 		events: {
-			"click .menu-item-control": "onControlClick"
+			"click .cover-menu-item-control": "onControlClick"
 		},
 
 		postRender: function() {
@@ -37,7 +37,6 @@ define([
 		onDeviceResize: function() {
 			this.setUpLayout();
 			_.defer(_.bind(this.navigate, this));
-
 		},
 
 		setId: function(id) {
@@ -47,7 +46,7 @@ define([
 		onReady: function() {
 			if (Adapt.device.screenSize !== "large") this.scroll();
 
-			this.$(".menu-item-container").removeClass("no-transition");
+			this.$(".cover-menu-item-container").removeClass("no-transition");
 		},
 
 		onIdChange: function(model, id) {
@@ -72,14 +71,14 @@ define([
 
 		setUpItems: function() {
 			var items = this.model.getAvailableChildModels();
-			var $itemContainer = this.$(".menu-item-container-inner");
-			var $indicatorContainer = this.$(".menu-item-indicator-container-inner");
+			var $items = this.$(".cover-menu-item-container-inner");
+			var $indicators = this.$(".cover-menu-item-indicator-container-inner");
 
 			for (var i = 0, j = items.length; i < j; i++) {
 				var options = { model: items[i] };
 
-				$itemContainer.append(new CoverMenuItemView(options).$el);
-				$indicatorContainer.append(new CoverMenuItemIndicatorView(options).$el);
+				$items.append(new CoverMenuItemView(options).$el);
+				$indicators.append(new CoverMenuItemIndicatorView(options).$el);
 			}
 		},
 
@@ -93,7 +92,7 @@ define([
 				height = $(window).height() - $(".navigation").height() + "px";
 			}
 
-			this.$(".menu-item-container-inner").css({
+			this.$(".cover-menu-item-container-inner").css({
 				width: width,
 				height: height,
 				"margin-left": ""
@@ -121,7 +120,7 @@ define([
 		navigate: function() {
 			if (Adapt.device.screenSize !== "large") return;
 
-			var $container = this.$(".menu-item-container-inner");
+			var $container = this.$(".cover-menu-item-container-inner");
 			var id = this.model.get("_coverId");
 			var marginLeft = parseInt($container.css("margin-left"), 10) -
 				$container.children("[data-adapt-id='" + id + "']").position().left;
@@ -132,14 +131,15 @@ define([
 		},
 
 		scroll: function() {
-			var $container = this.$(".menu-item-container-inner").css("margin-left", "");
-			var id = this.model.get("_coverId");
+			var $item = this.$(".cover-menu-item-container-inner")
+				.css("margin-left", "")
+				.children("[data-adapt-id='" + this.model.get("_coverId") + "']");
 
-			Adapt.scrollTo($container.children("[data-adapt-id='" + id + "']"));
+			Adapt.scrollTo($item);
 		},
 
 		setControlsVisibility: function() {
-			var $controls = this.$(".menu-item-control");
+			var $controls = this.$(".cover-menu-item-control");
 			var id = this.model.get("_coverId");
 			var models = this.model.getAvailableChildModels();
 			var hideLeft = id === models[0].get("_id");
@@ -150,16 +150,17 @@ define([
 		},
 
 		setIndicatorsState: function() {
-			var $indicators = this.$(".menu-item-indicator").removeClass("selected");
 			var id = this.model.get("_coverId");
 
-			$indicators.filter("[data-adapt-id='" + id + "']").addClass("selected");
+			this.$(".cover-menu-item-indicator")
+				.removeClass("selected")
+				.filter("[data-adapt-id='" + id + "']").addClass("selected");
 		}
 
 	}, { template: "coverMenu" });
 
 	Adapt.on("router:menu", function(model) {
-		$("#wrapper").append(new CoverMenuView({ model:model }).$el);
+		$("#wrapper").append(new CoverMenuView({ model: model }).$el);
 	});
 
 });

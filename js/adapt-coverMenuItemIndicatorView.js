@@ -8,11 +8,11 @@ define([
 		className: function() {
 			var classes = CoverMenuItemView.prototype.className.call(this);
 
-			return classes += " menu-item-indicator";
+			return classes += " cover-menu-item-indicator";
 		},
 
 		events: {
-			"click .menu-item-indicator-button": "onClick"
+			"click .cover-menu-item-indicator-button": "onClick"
 		},
 
 		postRender: function() {},

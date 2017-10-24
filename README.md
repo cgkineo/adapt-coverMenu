@@ -1,6 +1,6 @@
 # Cover Menu
 
-A carousel style menu.
+A carousel-style menu.
 
 ## Installation
 

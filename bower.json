@@ -1,11 +1,11 @@
 {
 	"name": "adapt-coverMenu",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"framework": ">=2.2",
 	"displayName": "Cover Menu",
 	"menu": "coverMenu",
 	"targetAttribute": "_coverMenu",
-	"description": "A carousel style menu",
+	"description": "A carousel-style menu",
 	"main": "/js/adapt-coverMenu.js",
 	"keywords": [
 		"adapt-plugin",

@@ -2,27 +2,27 @@
 	overflow: hidden;
 }
 
-.menu-item-container {
+.cover-menu-item-container {
 	position: relative;
 }
 
-.menu-item-container-inner {
+.cover-menu-item-container-inner {
 	transition: margin-left 0.4s ease-in-out;
 	.no-transition & {
 		transition: inherit;
 	}
 }
 
-.menu-item-inner {
+.cover-menu-item-inner {
 	max-width: 900px;
 	margin: 0 auto;
 }
 
-.menu-item-content {
+.cover-menu-item-content {
 	padding: @menu-block-padding-top @menu-block-padding-right @menu-block-padding-bottom @menu-block-padding-left;
 }
 
-.menu-item {
+.cover-menu-item {
 	float: left;
 	background-color: @menu-item-color;
 	background-position: center;
@@ -33,17 +33,17 @@
 	}
 }
 
-.menu-item-title {
+.cover-menu-item-title {
 	.menu-title;
 	margin-bottom: @menu-block-title-margin-bottom;
 }
 
-.menu-item-body,
-.menu-item-duration {
+.cover-menu-item-body,
+.cover-menu-item-duration {
 	margin-bottom: @menu-block-body-margin-bottom;
 }
 
-.menu-item-button {
+.cover-menu-item-button {
 	.locked &,
 	.no-touch .locked &:hover {
 		background-color: @disabled-color;
@@ -52,7 +52,7 @@
 	}
 }
 
-.menu-item-control.icon {
+.cover-menu-item-control.icon {
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
@@ -62,12 +62,15 @@
 	&.right {
 		right: 0;
 	}
+	.no-touch &:hover {
+		.transition-color;
+	}
 	@media (max-width: @device-width-medium) {
 		display: none;
 	}
 }
 
-.menu-item-indicator-container {
+.cover-menu-item-indicator-container {
 	position: fixed;
 	right: 0;
 	bottom: 0;
@@ -78,15 +81,15 @@
 	}
 }
 
-.menu-item-indicator-container-inner {
+.cover-menu-item-indicator-container-inner {
 	display: inline-block;
 }
 
-.menu-item-indicator.menu-item {
+.cover-menu-item-indicator.cover-menu-item {
 	background-color: transparent;
 }
 
-.menu-item-indicator-button {
+.cover-menu-item-indicator-button {
 	position: relative;
 	width: 24px;
 	height: 24px;
@@ -102,7 +105,7 @@
 	}
 }
 
-.menu-item-indicator-button-inner {
+.cover-menu-item-indicator-button-inner {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -120,7 +123,7 @@
 	.selected & {
 		background-color: @menu-item-progress-fill-color;
 	}
-	.no-touch .menu-item-indicator-button:hover & {
+	.no-touch .cover-menu-item-indicator-button:hover & {
 		.transition-background-color;
 		background-color: @menu-item-progress-fill-color;
 	}

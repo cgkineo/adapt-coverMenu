@@ -10,13 +10,6 @@
       "title": "Duration label",
       "inputType": "Text",
       "translatable": true
-    },
-    "buttonText": {
-      "type": "string",
-      "default": "Start",
-      "title": "Button text",
-      "inputType": "Text",
-      "translatable": true
     }
   },
   "properties": {
