@@ -101,8 +101,14 @@ define([
 
 		getNextIncompleteId: function() {
 			var models = this.model.getAvailableChildModels();
-			var id = Adapt.offlineStorage.get("coverId") || this.model.get("_coverId") ||
-				models[0].get("_id");
+			var id = Adapt.offlineStorage.get("coverId") || this.model.get("_coverId");
+			
+			// if there's no stored id or the contentObject with that id either no longer exists
+			// or exists but is no longer 'available', default to the first available one
+			var contentObject = Adapt.findById(id);
+			if (!contentObject || !contentObject.get('_isAvailable')) {
+				id = models[0].get("_id");
+			}
 
 			var index = _.findIndex(models, function(model) {
 				return model.get("_id") === id;
