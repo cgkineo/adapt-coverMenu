@@ -1,30 +1,30 @@
 define([
-	"./adapt-coverMenuItemView",
-	"core/js/adapt"
+    "./adapt-coverMenuItemView",
+    "core/js/adapt"
 ], function(CoverMenuItemView, Adapt) {
 
-	var CoverMenuItemIndicatorView = CoverMenuItemView.extend({
+    var CoverMenuItemIndicatorView = CoverMenuItemView.extend({
 
-		className: function() {
-			var classes = CoverMenuItemView.prototype.className.call(this);
+        className: function() {
+            var classes = CoverMenuItemView.prototype.className.call(this);
 
-			return classes += " cover-menu-item-indicator";
-		},
+            return classes += " cover-menu-item-indicator";
+        },
 
-		events: {
-			"click .cover-menu-item-indicator-button": "onClick"
-		},
+        events: {
+            "click .cover-menu-item-indicator-button": "onClick"
+        },
 
-		postRender: function() {},
+        postRender: function() {},
 
-		onDeviceResize: function() {},
+        onDeviceResize: function() {},
 
-		onClick: function() {
-			Adapt.trigger("coverMenu:setId", this.model.get("_id"));
-		}
+        onClick: function() {
+            Adapt.trigger("coverMenu:setId", this.model.get("_id"));
+        }
 
-	}, { template: "coverMenuItemIndicator" });
+    }, { template: "coverMenuItemIndicator" });
 
-	return CoverMenuItemIndicatorView;
+    return CoverMenuItemIndicatorView;
 
 });
