@@ -117,7 +117,12 @@ define([
 			for (var i = index, j = models.length; i < j; i++) {
 				var model = models[i];
 
-				if (!model.get("_isComplete")) return model.get("_id");
+				if (!model.get("_isComplete")) {
+					var newid = model.get("_id");
+					// the onIdChange handler isn't setup at this point so need to make sure the newid gets put into offlineStorage
+					Adapt.offlineStorage.set("coverId", newid);
+					return newid;
+				}
 			}
 
 			return id;
