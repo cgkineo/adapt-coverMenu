@@ -19,36 +19,15 @@ define([ "core/js/views/adaptView", "core/js/adapt" ], function(AdaptView, Adapt
             "click .cover-menu-item-button": "onClick"
         },
 
-        preRender: function() {
-            this.listenTo(Adapt, "device:resize", this.onDeviceResize);
-        },
-
         postRender: function() {
-            this.setUpLayout();
             this.setBackgroundImage();
             this.$el.imageready(_.bind(this.setReadyStatus, this));
-        },
-
-        onDeviceResize: function() {
-            this.setUpLayout();
         },
 
         onClick: function() {
             if (!this.model.get("_isLocked")) {
                 Adapt.navigateToElement(this.model.get("_id"));
             }
-        },
-
-        setUpLayout: function() {
-            var width = "";
-            var height = "";
-
-            if (Adapt.device.screenSize === "large") {
-                width = $("#wrapper").width() + "px";
-                height = $(window).height() - $(".navigation").height() + "px";
-            }
-
-            this.$el.css({ width: width, height: height });
         },
 
         setBackgroundImage: function() {

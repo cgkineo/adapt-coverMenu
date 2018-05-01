@@ -7,6 +7,12 @@ define([
 
     var CoverMenuView = MenuView.extend({
 
+        attributes: function() {
+            return _.extend(MenuView.prototype.attributes.call(this), {
+                "data-item-count": this.model.getAvailableChildModels().length
+            });
+        },
+
         className: function() {
             return MenuView.prototype.className.call(this) + " cover-menu";
         },
@@ -16,31 +22,21 @@ define([
         },
 
         postRender: function() {
+            var item = this.getNextIncompleteItem();
+
             this.listenTo(Adapt, {
-                "device:resize": this.onDeviceResize,
-                "coverMenu:setId": this.setId,
+                "coverMenu:setItem": this.setItem,
                 "menuView:ready": this.onReady
             });
 
             this.setUpItems();
-            this.setUpLayout();
-            this.setId(this.getNextIncompleteId());
-            this.listenTo(this.model, "change:_coverId", this.onIdChange);
+            this.setItem(item.id, item.index);
         },
 
-        isReady: function(model, isReady) {
-            if (isReady) this.navigate();
-
-            MenuView.prototype.isReady.apply(this, arguments);
-        },
-
-        onDeviceResize: function() {
-            this.setUpLayout();
-            _.defer(_.bind(this.navigate, this));
-        },
-
-        setId: function(id) {
+        setItem: function(id, index) {
             this.model.set("_coverId", id);
+            Adapt.offlineStorage.set("coverId", id);
+            this.$el.attr("data-item-index", index);
         },
 
         onReady: function() {
@@ -49,30 +45,22 @@ define([
             this.$(".cover-menu-item-container").removeClass("no-transition");
         },
 
-        onIdChange: function(model, id) {
-            Adapt.offlineStorage.set("coverId", id);
-            this.navigate();
-        },
-
         onControlClick: function(event) {
+            var index = $(event.currentTarget).hasClass("back") ?
+                parseInt(this.$el.attr("data-item-index"), 10) - 1 :
+                parseInt(this.$el.attr("data-item-index"), 10) + 1;
+
             var models = this.model.getAvailableChildModels();
-            var id = this.model.get("_coverId");
 
-            for (var i = 0, j = models.length; i < j; i++) {
-                if (models[i].get("_id") !== id) continue;
-
-                id = $(event.currentTarget).hasClass("left") ?
-                    models[i - 1].get("_id") :
-                    models[i + 1].get("_id");
-
-                return this.setId(id);
+            if (index > -1 && index < models.length) {
+                this.setItem(models[index].get("_id"), index);
             }
         },
 
         setUpItems: function() {
             var items = this.model.getAvailableChildModels();
-            var $items = this.$(".cover-menu-item-container-inner");
-            var $indicators = this.$(".cover-menu-item-indicator-container-inner");
+            var $items = this.$(".cover-menu-item-container");
+            var $indicators = this.$(".cover-menu-item-indicator-container");
 
             for (var i = 0, j = items.length; i < j; i++) {
                 var options = { model: items[i] };
@@ -82,91 +70,31 @@ define([
             }
         },
 
-        setUpLayout: function() {
-            var width = "";
-            var height = "";
-
-            if (Adapt.device.screenSize === "large") {
-                width = $("#wrapper").width() *
-                    this.model.getAvailableChildModels().length + "px";
-                height = $(window).height() - $(".navigation").height() + "px";
-            }
-
-            this.$(".cover-menu-item-container-inner").css({
-                width: width,
-                height: height,
-                "margin-left": ""
-            });
-        },
-
-        getNextIncompleteId: function() {
+        getNextIncompleteItem: function() {
             var models = this.model.getAvailableChildModels();
-            var id = Adapt.offlineStorage.get("coverId") || this.model.get("_coverId");
-            
-            // if there's no stored id or the contentObject with that id either no longer exists
-            // or exists but is no longer 'available', default to the first available one
-            var contentObject = Adapt.findById(id);
-            if (!contentObject || !contentObject.get('_isAvailable')) {
-                id = models[0].get("_id");
-            }
+            var id = this.model.get("_coverId") || Adapt.offlineStorage.get("coverId");
 
             var index = _.findIndex(models, function(model) {
                 return model.get("_id") === id;
             });
 
+            if (index === -1) index = 0;
+
             for (var i = index, j = models.length; i < j; i++) {
                 var model = models[i];
 
-                if (!model.get("_isComplete")) {
-                    var newid = model.get("_id");
-                    // the onIdChange handler isn't setup at this point so need to make sure the newid gets put into offlineStorage
-                    Adapt.offlineStorage.set("coverId", newid);
-                    return newid;
-                }
+                if (!model.get("_isComplete")) return { id: model.get("_id"), index: i };
             }
 
-            return id;
-        },
-
-        navigate: function() {
-            if (Adapt.device.screenSize !== "large") return;
-
-            var $container = this.$(".cover-menu-item-container-inner");
-            var id = this.model.get("_coverId");
-            var marginLeft = parseInt($container.css("margin-left"), 10) -
-                $container.children("[data-adapt-id='" + id + "']").position().left;
-
-            $container.css("margin-left", marginLeft);
-            this.setControlsVisibility();
-            this.setIndicatorsState();
+            return { id: id, index: index };
         },
 
         scroll: function() {
-            var $item = this.$(".cover-menu-item-container-inner")
-                .css("margin-left", "")
-                .children("[data-adapt-id='" + this.model.get("_coverId") + "']");
+            var $item = this.$(".cover-menu-item")
+                .filter("[data-adapt-id='" + this.model.get("_coverId") + "']");
 
             Adapt.scrollTo($item);
         },
-
-        setControlsVisibility: function() {
-            var $controls = this.$(".cover-menu-item-control");
-            var id = this.model.get("_coverId");
-            var models = this.model.getAvailableChildModels();
-            var hideLeft = id === models[0].get("_id");
-            var hideRight = id === models[models.length - 1].get("_id");
-
-            $controls.filter(".left").toggleClass("display-none", hideLeft);
-            $controls.filter(".right").toggleClass("display-none", hideRight);
-        },
-
-        setIndicatorsState: function() {
-            var id = this.model.get("_coverId");
-
-            this.$(".cover-menu-item-indicator")
-                .removeClass("selected")
-                .filter("[data-adapt-id='" + id + "']").addClass("selected");
-        }
 
     }, { template: "coverMenu" });
 

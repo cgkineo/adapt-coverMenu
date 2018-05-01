@@ -1,6 +1,6 @@
 {
 	"name": "adapt-coverMenu",
-	"version": "3.0.1",
+	"version": "4.0.0",
 	"framework": ">=2.2",
 	"displayName": "Cover Menu",
 	"menu": "coverMenu",
