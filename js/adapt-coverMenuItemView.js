@@ -31,7 +31,8 @@ define([ "core/js/views/adaptView", "core/js/adapt" ], function(AdaptView, Adapt
         },
 
         setBackgroundImage: function() {
-            var src = this.model.get("_graphic").src;
+            var graphic = this.model.get("_graphic");
+            var src = graphic && graphic.src;
 
             if (src) this.$el.css("background-image", "url(" + src + ")");
         },
