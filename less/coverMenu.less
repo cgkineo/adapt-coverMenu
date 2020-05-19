@@ -4,203 +4,226 @@
 
 .generate-styles;
 
-.generate-styles(@i: 0) when (@i <= @item-max-count) {
-    .container-layout;
-    .indicator-active;
-    .item-last;
-    .generate-styles(@i + 1);
+.generate-styles(@i: 0) when (@i <=@item-max-count) {
+  .container-layout;
+  .indicator-active;
+  .item-last;
+  .generate-styles(@i + 1);
 }
 
 .location-menu {
-    &.os-ios #a11y-focusguard,
-    &.os-android #a11y-focusguard {
-        display: none;
+
+  &.os-ios #a11y-focusguard,
+  &.os-android #a11y-focusguard {
+    display: none;
+  }
+
+  @media @device-large {
+
+    &.os-ios,
+    &.os-android {
+
+      &,
+      body,
+      .cover-menu,
+      .cover-menu-item-container {
+        height: 100%;
+      }
+
+      #wrapper {
+        height: calc(100% ~"-"@navigation-height);
+      }
     }
-    @media @device-large {
-        &.os-ios,
-        &.os-android {
-            &,
-            body,
-            .cover-menu,
-            .cover-menu-item-container {
-                height: 100%;
-            }
-            #wrapper {
-                height: calc(100% ~"-" @navigation-padding * 2 + @icon-size);
-            }
-        }
-        &.os-android #wrapper {
-            position: fixed;
-        }
+
+    &.os-android #wrapper {
+      position: fixed;
     }
+  }
 }
 
 .cover-menu {
-    position: relative;
+  position: relative;
 }
 
 .cover-menu-item-container {
-    @media @device-large {
-        display: flex;
-        &:not(.no-transition) {
-            transition: margin-left 0.4s ease-in-out;
-        }
+  @media @device-large {
+    display: flex;
+
+    &:not(.no-transition) {
+      transition: margin-left 0.4s ease-in-out;
     }
+  }
 }
 
 .container-layout() {
-    @media @device-large {
-        .cover-menu-item-container {
-            & when (@i > 0) {
-                [data-item-count="@{i}"] & {
-                    width: unit(@i * 100, %);
-                }
-            }
-            & when (@i < @item-max-count) {
-                [data-item-index="@{i}"] & {
-                    margin-left: unit(-@i * 100, %);
-                }
-            }
+  @media @device-large {
+    .cover-menu-item-container {
+      & when (@i > 0) {
+        [data-item-count="@{i}"] & {
+          width: unit(@i * 100, %);
         }
+      }
+
+      & when (@i < @item-max-count) {
+        [data-item-index="@{i}"] & {
+          margin-left: unit(-@i * 100, %);
+        }
+      }
     }
+  }
 }
 
 .cover-menu-item:not(.cover-menu-item-indicator) {
-    width: 100%;
-    background-color: @menu-item-color;
-    background-position: center;
-    background-size: cover;
-    color: @menu-item-text-color;
-    &:nth-child(even) {
-        background-color: spin(@menu-item-color, -20);
+  width: 100%;
+  background-color: @menu-item;
+  background-position: center;
+  background-size: cover;
+  color: @menu-item-inverted;
+
+  &:nth-child(even) {
+    background-color: spin(@menu-item, -20);
+  }
+
+  @media @device-large {
+    @{non-mobile} & {
+      min-height: calc(100vh ~"-"@navigation-height);
     }
-    @media @device-large {
-        @{non-mobile} & {
-            min-height: calc(100vh ~"-" @navigation-padding * 2 + @icon-size);
-        }
-    }
+  }
 }
 
 .cover-menu-item-inner {
-    max-width: 900px;
-    margin: 0 auto;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .cover-menu-item-content {
-    padding: @menu-block-padding-top @menu-block-padding-right @menu-block-padding-bottom @menu-block-padding-left;
+  padding: 1rem;
 }
 
 .cover-menu-item-title {
-    .menu-title;
-    margin-bottom: @menu-block-title-margin-bottom;
+  .menu-title;
+  margin-bottom: @menu-item-title-margin;
 }
 
 .cover-menu-item-body,
 .cover-menu-item-duration {
-    margin-bottom: @menu-block-body-margin-bottom;
+  margin-bottom: @menu-item-body-margin;
 }
 
-.cover-menu-item-button {
-    .locked &,
-    @{non-mobile} .locked &:hover {
-        background-color: @disabled-color;
-        color: @disabled-color-inverted;
-        cursor: default;
-    }
-}
+// .cover-menu-item-button {
+//     .locked &,
+//     @{non-mobile} .locked &:hover {
+//         background-color: @disabled-color;
+//         color: @disabled-color-inverted;
+//         cursor: default;
+//     }
+// }
 
 .cover-menu-item-control.icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    &.back {
-        left: 0;
-        [data-item-index="0"] & {
-            .control-disabled;
-        }
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &.back {
+    left: 0;
+
+    [data-item-index="0"] & {
+      .control-disabled;
     }
-    &.next {
-        right: 0;
-    }
-    @{non-mobile} &:hover {
-        .transition-color;
-    }
-    @media (max-width: @device-width-medium) {
-        display: none;
-    }
+  }
+
+  &.next {
+    right: 0;
+  }
+
+  @{non-mobile} &:hover {
+    .transition(color @duration ease-in);
+  }
+
+  @media (max-width: @device-width-medium) {
+    display: none;
+  }
 }
 
 .control-disabled() {
-    display: none;
+  display: none;
 }
 
 .item-last() {
-    & when (@i > 0) and (@i < @item-max-count) {
-        @index-last: @i - 1;
-        [data-item-count="@{i}"][data-item-index="@{index-last}"] .cover-menu-item-control.next {
-            .control-disabled;
-        }
+  & when (@i > 0) and (@i < @item-max-count) {
+    @index-last: @i - 1;
+
+    [data-item-count="@{i}"][data-item-index="@{index-last}"] .cover-menu-item-control.next {
+      .control-disabled;
     }
+  }
 }
 
 .cover-menu-item-indicator-container {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    @media (max-width: @device-width-medium) {
-        display: none;
-    }
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @media (max-width: @device-width-medium) {
+    display: none;
+  }
 }
 
 .cover-menu-item-indicator {
-    display: inline-block;
-    padding: 4px 2px;
+  display: inline-block;
+  padding: 4px 2px;
 }
 
 .indicator-active() {
-    & when (@i < @item-max-count) {
-        [data-item-index="@{i}"] {
-            & & .cover-menu-item-indicator-button {
-                border-color: @menu-item-progress-fill-color;
-                cursor: default;
-            }
-            & & .cover-menu-item-indicator-button-inner {
-                background-color: @menu-item-progress-fill-color;
-            }
-        }
+  & when (@i < @item-max-count) {
+    [data-item-index="@{i}"] {
+      & & .cover-menu-item-indicator-button {
+        border-color: @progress-inverted;
+        cursor: default;
+      }
+
+      & & .cover-menu-item-indicator-button-inner {
+        background-color: @progress-inverted;
+      }
     }
+  }
 }
 
 .cover-menu-item-indicator-button {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    border: 3px @menu-item-progress-color solid;
-    border-radius: 50%;
-    @{non-mobile} &:hover {
-        .transition-border-color;
-        border-color: @menu-item-progress-fill-color;
-    }
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 3px @progress solid;
+  border-radius: 50%;
+  background-color: transparent;
+
+  @{non-mobile} &:hover {
+    .transition(border-color @duration ease-in);
+    border-color: @progress-inverted;
+  }
 }
 
 .cover-menu-item-indicator-button-inner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 14px;
-    margin: -7px 0 0 -7px;
-    background-color: @menu-item-progress-color;
-    .visited & {
-        width: 7px;
-        border-radius: 14px 0 0 14px;
-    }
-    .completed & {
-        width: 14px;
-        border-radius: 50%;
-    }
-    @{non-mobile} .cover-menu-item-indicator-button:hover & {
-        .transition-background-color;
-        background-color: @menu-item-progress-fill-color;
-    }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background-color: @progress;
+
+  .visited & {
+    width: 7px;
+    border-radius: 14px 0 0 14px;
+  }
+
+  .completed & {
+    width: 14px;
+    border-radius: 50%;
+  }
+
+  @{non-mobile} .cover-menu-item-indicator-button:hover & {
+    .transition(background-color @duration ease-in, color @duration ease-in; );
+    background-color: @progress-inverted;
+  }
 }
