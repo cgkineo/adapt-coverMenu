@@ -13,12 +13,8 @@ define([
       });
     },
 
-    className: function () {
-      return MenuView.prototype.className.call(this) + " covermenu";
-    },
-
     events: {
-      "click .cover-menu-item-control": "onControlClick"
+      "click .covermenu-item__control": "onControlClick"
     },
 
     postRender: function () {
@@ -41,7 +37,6 @@ define([
 
     onReady: function () {
       if (Adapt.device.screenSize !== "large") this.scroll();
-
       this.$(".covermenu-item__container").removeClass("no-transition");
     },
 
@@ -96,7 +91,10 @@ define([
       Adapt.scrollTo($item);
     },
 
-  }, { template: "coverMenu" });
+  }, {
+    template: "coverMenu",
+    className: 'covermenu'
+  });
 
   Adapt.on("router:menu", function (model) {
     $("#wrapper").append(new CoverMenuView({ model: model }).$el);
