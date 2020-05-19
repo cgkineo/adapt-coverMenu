@@ -1,38 +1,38 @@
 define([
-    "./adapt-coverMenuItemView",
-    "core/js/adapt"
-], function(CoverMenuItemView, Adapt) {
+  "./adapt-coverMenuItemView",
+  "core/js/adapt"
+], function (CoverMenuItemView, Adapt) {
 
-    var CoverMenuItemIndicatorView = CoverMenuItemView.extend({
+  var CoverMenuItemIndicatorView = CoverMenuItemView.extend({
 
-        attributes: function() {
-            var models = this.model.getParent().getAvailableChildModels();
+    attributes: function () {
+      var models = this.model.getParent().getAvailableChildModels();
 
-            return _.extend(CoverMenuItemView.prototype.attributes.call(this), {
-                "data-item-index": models.indexOf(this.model)
-            });
-        },
+      return _.extend(CoverMenuItemView.prototype.attributes.call(this), {
+        "data-item-index": models.indexOf(this.model)
+      });
+    },
 
-        className: function() {
-            var classes = CoverMenuItemView.prototype.className.call(this);
+    className: function () {
+      var classes = CoverMenuItemView.prototype.className.call(this);
 
-            return classes += " cover-menu-item-indicator";
-        },
+      return classes += " covermenu-item__indicator";
+    },
 
-        events: {
-            "click .cover-menu-item-indicator-button": "onClick"
-        },
+    events: {
+      "click .covermenu-item__indicator__button": "onClick"
+    },
 
-        postRender: function() {},
+    postRender: function () { },
 
-        onClick: function() {
-            var index = this.$el.data("item-index");
+    onClick: function () {
+      var index = this.$el.data("item-index");
 
-            Adapt.trigger("coverMenu:setItem", this.model.get("_id"), index);
-        }
+      Adapt.trigger("coverMenu:setItem", this.model.get("_id"), index);
+    }
 
-    }, { template: "coverMenuItemIndicator" });
+  }, { template: "coverMenuItemIndicator" });
 
-    return CoverMenuItemIndicatorView;
+  return CoverMenuItemIndicatorView;
 
 });
