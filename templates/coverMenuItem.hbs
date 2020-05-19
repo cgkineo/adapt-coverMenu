@@ -1,14 +1,47 @@
-<div class="cover-menu-item-inner">
-    <div class="cover-menu-item-content">
-        {{#if displayTitle}}
-        <div class="cover-menu-item-title">{{{displayTitle}}}</div>
-        {{/if}}
-        {{#if body}}
-        <div class="cover-menu-item-body">{{{body}}}</div>
-        {{/if}}
-        {{#if duration}}
-        <div class="cover-menu-item-duration">{{{_globals._menu._coverMenu.durationLabel}}}{{{duration}}}</div>
-        {{/if}}
-        <button class="cover-menu-item-button">{{{linkText}}}</button>
+{{import_globals}}
+
+<div class="menu-item__inner covermenu-item__inner">
+
+  <div class="menu-item__details covermenu-item__details">
+    <div class="menu-item__details-inner covermenu-item__details-inner">
+
+      {{#if displayTitle}}
+      <div class="menu-item__title covermenu-item__title">
+        <div class="js-heading" data-a11y-heading-type="menuItem"></div>
+
+        <div class="menu-item__title-inner covermenu-item__title-inner accessible-text-block" aria-hidden="true">
+          {{{compile displayTitle}}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if body}}
+      <div class="menu-item__body covermenu-item__body">
+        <div class="menu-item__body-inner covermenu-item__body-inner">
+          {{{compile body}}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if duration}}
+      <div class="menu-item__duration covermenu-item__duration">
+        <div class="menu-item__duration-inner covermenu-item__duration-inner">
+          {{#if _globals._menu._covermenu.durationLabel}}{{{_globals._menu._covermenu.durationLabel}}}{{/if}}
+          {{{duration}}}
+        </div>
+      </div>
+      {{/if}}
+
+      <div class="menu-item__button-container covermenu-item__button-container">
+        <button
+          class="btn-text menu-item__button covermenu-item__button js-btn-click{{#if _isVisited}} is-visited{{/if}}{{#if _isLocked}} is-locked{{/if}}"
+          aria-label="{{#if _isVisited}}{{_globals._accessibility._ariaLabels.visited}}{{/if}} {{linkText}}"
+          {{#if _isLocked}} disabled="disabled" {{/if}}>
+          {{{linkText}}}
+        </button>
+      </div>
+
     </div>
+  </div>
+
 </div>
