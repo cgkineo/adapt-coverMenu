@@ -1,55 +1,37 @@
-define(["core/js/views/adaptView", "core/js/adapt"], function (AdaptView, Adapt) {
+define([
+  "core/js/views/menuItemView",
+],
+  function (MenuItemView) {
 
-  var CoverMenuItemView = AdaptView.extend({
+    var CoverMenuItemView = MenuItemView.extend({
 
-    className: function () {
-      var classes = "covermenu-item";
-      var modelClasses = this.model.get("_classes");
+      events: {
+        "click .js-btn-click": "onClickMenuItemButton"
+      },
 
-      if (modelClasses) classes += " " + modelClasses;
-      if (this.isVisited()) classes += " visited";
-      if (this.model.get("_isOptional")) classes += " optional";
-      if (this.model.get("_isComplete")) classes += " completed";
-      if (this.model.get("_isLocked")) classes += " locked";
+      onClickMenuItemButton: function () {
+        if (event && event.preventDefault) event.preventDefault();
+        if (this.model.get('_isLocked')) return;
+        Backbone.history.navigate('#/id/' + this.model.get('_id'), { trigger: true });
+      },
 
-      return classes;
-    },
+      postRender: function () {
+        this.$el.imageready(this.setReadyStatus.bind(this));
+        this.setBackgroundImage();
+      },
 
-    events: {
-      "click .cover-menu-item-button": "onClick"
-    },
+      setBackgroundImage: function () {
+        var graphic = this.model.get("_graphic");
+        var src = graphic && graphic.src;
 
-    postRender: function () {
-      this.setBackgroundImage();
-      this.$el.imageready(_.bind(this.setReadyStatus, this));
-    },
-
-    onClick: function () {
-      if (!this.model.get("_isLocked")) {
-        Adapt.navigateToElement(this.model.get("_id"));
+        if (src) this.$el.css("background-image", "url(" + src + ")");
       }
-    },
 
-    setBackgroundImage: function () {
-      var graphic = this.model.get("_graphic");
-      var src = graphic && graphic.src;
+    }, {
+      template: "coverMenuItem",
+      className: "covermenu-item"
+    });
 
-      if (src) this.$el.css("background-image", "url(" + src + ")");
-    },
+    return CoverMenuItemView;
 
-    isVisited: function () {
-      if (this.model.get("_isVisited")) return true;
-
-      var components = this.model.findDescendantModels("components");
-
-      return _.find(components, function (component) {
-        return component.get("_isComplete") && component.get("_isAvailable") &&
-          !component.get("_isOptional");
-      });
-    }
-
-  }, { template: "coverMenuItem", type: "menu" });
-
-  return CoverMenuItemView;
-
-});
+  });
