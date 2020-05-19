@@ -1,16 +1,17 @@
 {
-	"name": "adapt-coverMenu",
-	"version": "4.0.0",
-	"framework": ">=2.2",
-	"displayName": "Cover Menu",
-	"menu": "coverMenu",
-	"targetAttribute": "_coverMenu",
-	"description": "A carousel-style menu",
-	"main": "/js/adapt-coverMenu.js",
-	"keywords": [
-		"adapt-plugin",
-		"adapt-menu"
-	],
-	"license": "GPL-3.0",
-	"homepage": "https://github.com/cgkineo/adapt-coverMenu"
+  "name": "adapt-coverMenu",
+  "version": "5.0.0",
+  "framework": ">=5",
+  "homepage": "https://github.com/cgkineo/adapt-coverMenu",
+  "issues": "https://github.com/adaptlearning/adapt_framework/issues/new",
+  "menu": "coverMenu",
+  "displayName": "Cover Menu",
+  "description": "A carousel-style menu",
+  "main": "/js/adapt-coverMenu.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-menu"
+  ],
+  "license": "GPL-3.0",
+  "targetAttribute": "_coverMenu"
 }
